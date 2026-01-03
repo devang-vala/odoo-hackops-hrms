@@ -1,6 +1,21 @@
+## 🔑 Test Login Credentials
+
+### 👩‍💼 HR / Admin Login 
+  **Test credentials:** `nirmeet.hackops.admin@gmail.com`
+- **Password:** `Nirmeet@hr123`
+
+> ✅ Any email with the suffix **`.hackops.admin@gmail.com`** can be used for HR/Admin testing.
+
+### 👨‍💻 Employee Login
+- **Email:** `nirmeetparmar21@gmail.com`
+- **Password:** `Nirmeet@e123`
+
+---
+
 # HRMS - Human Resource Management System
 
-🔗 **Live Demo:** [https://odoo-hackops-hrms.vercel.app](https://odoo-hackops-hrms.vercel.app)
+🔗 **Live Demo:**  
+https://odoo-hackops-hrms.vercel.app
 
 ---
 
@@ -10,7 +25,7 @@
 - Email/Password login with JWT
 - HR self-registration
 - Auto-generated Employee IDs (`OIJODO20220001`)
-- **Email notifications with credentials on employee creation**
+- Email notifications with credentials on employee creation
 - Mandatory password change on first login
 
 ### 👥 Employee Management
@@ -20,13 +35,17 @@
 - Employee list & management
 
 ### ⏰ Attendance
-- Check-in/Check-out system
+- Check-in / Check-out system
 - Manual attendance entry (HR)
 - Work hours tracking
 - Attendance reports
 
 ### 🏖️ Leave Management
-- Leave types:  Paid (20), Sick (10), Casual (12), Unpaid
+- Leave types:
+  - Paid (20)
+  - Sick (10)
+  - Casual (12)
+  - Unpaid
 - Apply, approve/reject leaves
 - Leave balance tracking
 - Leave history
@@ -54,14 +73,14 @@
 ## ⚡ Quick Start
 
 ```bash
-# Clone
+# Clone repository
 git clone https://github.com/devang-vala/odoo-hackops-hrms.git
 cd hrms
 
-# Install
+# Install dependencies
 npm install
 
-# Setup . env.local
+# Setup environment variables
 DATABASE_URL="postgresql://..."
 JWT_SECRET="your-secret"
 CLOUDINARY_CLOUD_NAME="..."
@@ -71,18 +90,9 @@ EMAIL_USER="your-email@gmail.com"
 EMAIL_PASSWORD="app-password"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
-# Database
+# Prisma setup
 npx prisma generate
 npx prisma migrate dev
 
-# Run
+# Run development server
 npm run dev
-```
-## 📧 Email Notifications
-- Automated emails sent for:
-
-- Employee onboarding (credentials)
-
-<br>
-Built with ❤️ for HackOps
-
