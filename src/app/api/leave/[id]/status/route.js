@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/auth-middleware";
 import { prisma } from "@/lib/prisma";
 import { getISTDateOnly } from "@/lib/timezone";
 
-export async function PATCH(request, { params }) {
+export async function PATCH(request, context) {
   try {
     const { user, response } = await requireAuth(request);
     if (response) return response;
@@ -20,12 +20,27 @@ export async function PATCH(request, { params }) {
       );
     }
 
+    // ✅ Fix:  Await params in Next.js 15+
+    const params = await context.params;
     const { id } = params;
+
+    // Validate id
+    if (!id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid request",
+          message: "Leave ID is required",
+        },
+        { status: 400 }
+      );
+    }
+
     const body = await request.json();
     const { status, hrComments } = body;
 
     // Validation
-    if (!status || !["APPROVED", "REJECTED"].includes(status)) {
+    if (! status || !["APPROVED", "REJECTED"].includes(status)) {
       return NextResponse.json(
         {
           success: false,
@@ -39,7 +54,7 @@ export async function PATCH(request, { params }) {
     // Find leave request
     const leave = await prisma.leave.findUnique({
       where: { id },
-      include: {
+      include:  {
         user: true,
       },
     });
@@ -86,7 +101,7 @@ export async function PATCH(request, { params }) {
       return NextResponse.json(
         {
           success: false,
-          error: "Expired",
+          error:  "Expired",
           message: "Cannot approve/reject leave for past dates",
         },
         { status: 400 }

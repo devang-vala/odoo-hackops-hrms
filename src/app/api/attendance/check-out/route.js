@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { 
   getCurrentIST, 
   parseRequestDate,
+  getISTDateOnly,
   formatISTDateTime 
 } from "@/lib/timezone";
 
@@ -25,10 +26,18 @@ export async function POST(request) {
     const { user, response } = await requireAuth(request);
     if (response) return response;
 
-    const body = await request.json();
-    const { date } = body;
+    // Try to parse body, but don't fail if it's empty
+    let date = null;
+    try {
+      const body = await request.json();
+      date = body.date;
+    } catch (error) {
+      // No body or empty body is fine for check-out
+      date = null;
+    }
 
-    const checkOutDate = date ? parseRequestDate(date) : parseRequestDate();
+    // Use today's date if no date provided
+    const checkOutDate = date ? parseRequestDate(date) : getISTDateOnly();
 
     // Find existing attendance
     const attendance = await prisma.attendance.findUnique({
@@ -55,10 +64,10 @@ export async function POST(request) {
       return NextResponse.json(
         {
           success: false,
-          error:  "Already checked out",
+          error:   "Already checked out",
           message: "You have already checked out for this date",
           attendance: {
-            ...attendance,
+            ... attendance,
             checkIn: formatISTDateTime(attendance.checkIn),
             checkOut: formatISTDateTime(attendance.checkOut),
             date: attendance.date.toISOString().split('T')[0],
@@ -86,12 +95,12 @@ export async function POST(request) {
     const workHours = calculateWorkHours(attendance.checkIn, checkOutTime);
     const status = determineStatus(workHours);
 
-    // Update attendance
+    // Update attendanc
     const updatedAttendance = await prisma.attendance.update({
       where: { id: attendance.id },
       data: {
-        checkOut:  checkOutTime,
-        workHours:  parseFloat(workHours.toFixed(2)),
+        checkOut:   checkOutTime,
+        workHours:   parseFloat(workHours.toFixed(2)),
         status,
       },
     });
@@ -100,9 +109,9 @@ export async function POST(request) {
       {
         success: true,
         message: "Checked out successfully",
-        attendance:  {
+        attendance:   {
           ...updatedAttendance,
-          checkIn: formatISTDateTime(updatedAttendance.checkIn),
+          checkIn:  formatISTDateTime(updatedAttendance.checkIn),
           checkOut: formatISTDateTime(updatedAttendance.checkOut),
           date: updatedAttendance.date.toISOString().split('T')[0],
           workHours: parseFloat(workHours.toFixed(2)),
@@ -116,7 +125,7 @@ export async function POST(request) {
       {
         success: false,
         error: "Internal server error",
-        message:  "Failed to check out",
+        message:   "Failed to check out",
       },
       { status: 500 }
     );

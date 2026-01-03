@@ -1,7 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { Plus, Search, Filter, X } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -10,391 +22,336 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Search,
-  Calendar,
-  Clock,
-  ChevronLeft,
-  ChevronRight,
-  UserCheck,
-  UserX,
-  Users,
-  Timer,
-} from "lucide-react";
 
-export default function AttendancePage() {
+export default function HRAttendancePage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [attendances, setAttendances] = useState([]);
-  const [filteredAttendances, setFilteredAttendances] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [stats, setStats] = useState({
-    total: 0,
-    present: 0,
-    absent: 0,
-    halfDay: 0,
-  });
+  const [employees, setEmployees] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
+  
+  // Filters
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState("ALL");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+
+  // Manual entry state
+  const [manualDialogOpen, setManualDialogOpen] = useState(false);
+  const [manualUserId, setManualUserId] = useState("");
+  const [manualDate, setManualDate] = useState("");
+  const [manualStatus, setManualStatus] = useState("PRESENT");
+  const [manualRemarks, setManualRemarks] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchAttendance();
-  }, [selectedDate]);
+    if (!loading && (!user || user.role !== "HR")) {
+      router.push("/");
+    }
+  }, [user, loading, router]);
 
   useEffect(() => {
-    filterAttendances();
-  }, [searchQuery, statusFilter, attendances]);
+    if (user?.role === "HR") {
+      fetchEmployees();
+      fetchAttendances();
+    }
+  }, [user]);
 
-  const fetchAttendance = async () => {
-    setLoading(true);
+  const fetchEmployees = async () => {
     try {
-      const response = await api.get(`/api/attendance/all?date=${selectedDate}`);
-      if (response.data.success) {
-        setAttendances(response.data.attendances);
-        calculateStats(response.data.attendances);
-      }
+      const response = await api.get("/api/users?role=EMPLOYEE");
+      setEmployees(response.data.users);
     } catch (error) {
-      console.error("Failed to fetch attendance:", error);
+      console.error("Failed to fetch employees:", error);
+      toast.error("Failed to fetch employees");
+    }
+  };
+
+  const fetchAttendances = async () => {
+    try {
+      setLoadingData(true);
+      let url = "/api/attendance/all? ";
+      
+      // Build query params
+      const params = new URLSearchParams();
+      if (selectedEmployee && selectedEmployee !== "ALL") {
+        params.append("userId", selectedEmployee);
+      }
+      if (startDate) params.append("startDate", startDate);
+      if (endDate) params.append("endDate", endDate);
+      if (statusFilter && statusFilter !== "ALL") {
+        params.append("status", statusFilter);
+      }
+
+      const response = await api.get(`${url}${params.toString()}`);
+      setAttendances(response.data.attendances);
+    } catch (error) {
+      toast.error("Failed to fetch attendance");
+      console.error(error);
     } finally {
-      setLoading(false);
+      setLoadingData(false);
     }
   };
 
-  const calculateStats = (data) => {
-    setStats({
-      total: data.length,
-      present: data.filter((a) => a.status === "PRESENT").length,
-      absent: data.filter((a) => a.status === "ABSENT").length,
-      halfDay: data.filter((a) => a.status === "HALF_DAY").length,
-    });
-  };
-
-  const filterAttendances = () => {
-    let filtered = attendances;
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (att) =>
-          att.user?.name?.toLowerCase().includes(query) ||
-          att.user?.email?.toLowerCase().includes(query) ||
-          att.user?.employeeId?.toLowerCase().includes(query)
-      );
+  const handleManualEntry = async () => {
+    if (!manualUserId || !manualDate || !  manualStatus) {
+      toast.error("Please fill all required fields");
+      return;
     }
 
-    if (statusFilter !== "all") {
-      filtered = filtered.filter((att) => att.status === statusFilter);
+    try {
+      setSubmitting(true);
+      await api.post("/api/attendance/manual", {
+        userId: manualUserId,
+        date:  manualDate,
+        status:  manualStatus,
+        remarks:  manualRemarks,
+      });
+      toast.success("Manual attendance created successfully!");
+      setManualDialogOpen(false);
+      setManualUserId("");
+      setManualDate("");
+      setManualStatus("PRESENT");
+      setManualRemarks("");
+      fetchAttendances();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to create attendance");
+    } finally {
+      setSubmitting(false);
     }
-
-    setFilteredAttendances(filtered);
   };
 
-  const changeDate = (days) => {
-    const date = new Date(selectedDate);
-    date.setDate(date.getDate() + days);
-    setSelectedDate(date.toISOString().split("T")[0]);
+  const clearFilters = () => {
+    setSelectedEmployee("ALL");
+    setStartDate("");
+    setEndDate("");
+    setStatusFilter("ALL");
   };
 
   const getStatusBadge = (status) => {
     const variants = {
-      PRESENT: { className: "bg-green-100 text-green-700", label: "Present" },
-      ABSENT: { className: "bg-red-100 text-red-700", label: "Absent" },
-      HALF_DAY: { className: "bg-yellow-100 text-yellow-700", label: "Half Day" },
-      LEAVE: { className: "bg-blue-100 text-blue-700", label: "On Leave" },
-      WEEKEND: { className: "bg-gray-100 text-gray-700", label: "Weekend" },
-      HOLIDAY: { className: "bg-purple-100 text-purple-700", label: "Holiday" },
+      PRESENT: "default",
+      ABSENT: "destructive",
+      HALF_DAY: "secondary",
+      LEAVE: "outline",
+      WEEKEND: "secondary",
+      HOLIDAY: "outline",
     };
-    const variant = variants[status] || variants.ABSENT;
+
+    return <Badge variant={variants[status] || "default"}>{status.replace("_", " ")}</Badge>;
+  };
+
+  if (loading || ! user) {
     return (
-      <Badge className={`${variant.className} hover:${variant.className}`}>
-        {variant.label}
-      </Badge>
+      <div className="min-h-screen flex items-center justify-center">
+        <Skeleton className="h-12 w-12 rounded-full" />
+      </div>
     );
-  };
-
-  const formatTime = (timeString) => {
-    if (!timeString) return "—";
-    return timeString;
-  };
-
-  const formatWorkHours = (hours) => {
-    if (!hours) return "—";
-    const h = Math.floor(hours);
-    const m = Math.round((hours - h) * 60);
-    return `${h}h ${m}m`;
-  };
-
-  const isToday = selectedDate === new Date().toISOString().split("T")[0];
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Attendance</h1>
-        <p className="text-muted-foreground">
-          View daily attendance records across your organization
-        </p>
-      </div>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Attendance Management</h1>
+          <p className="text-muted-foreground">View and manage employee attendance</p>
+        </div>
+        <Dialog open={manualDialogOpen} onOpenChange={setManualDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Manual Entry
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Manual Attendance Entry</DialogTitle>
+              <DialogDescription>Create attendance record manually</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Employee *</Label>
+                <Select value={manualUserId} onValueChange={setManualUserId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select employee" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {employees.map((emp) => (
+                      <SelectItem key={emp.id} value={emp.id}>
+                        {emp.name} {emp.employeeId && `(${emp.employeeId})`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-      {/* Date Selector */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => changeDate(-1)}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-lg">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
+              <div className="space-y-2">
+                <Label>Date *</Label>
+                <Input type="date" value={manualDate} onChange={(e) => setManualDate(e.target.value)} />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Status *</Label>
+                <Select value={manualStatus} onValueChange={setManualStatus}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="PRESENT">Present</SelectItem>
+                    <SelectItem value="ABSENT">Absent</SelectItem>
+                    <SelectItem value="HALF_DAY">Half Day</SelectItem>
+                    <SelectItem value="LEAVE">Leave</SelectItem>
+                    <SelectItem value="WEEKEND">Weekend</SelectItem>
+                    <SelectItem value="HOLIDAY">Holiday</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Remarks (Optional)</Label>
                 <Input
-                  type="date"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="border-0 bg-transparent p-0 h-auto focus-visible:ring-0 w-[140px]"
+                  placeholder="e.g., Late arrival, Medical emergency"
+                  value={manualRemarks}
+                  onChange={(e) => setManualRemarks(e.target.value)}
                 />
               </div>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => changeDate(1)}
-                disabled={isToday}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-              {!isToday && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    setSelectedDate(new Date().toISOString().split("T")[0])
-                  }
-                >
-                  Today
-                </Button>
-              )}
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {new Date(selectedDate).toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Stats Summary */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-blue-100">
-                <Users className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Total Records</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
-              </div>
+              <Button onClick={handleManualEntry} disabled={submitting} className="w-full">
+                {submitting ? "Creating..." : "Create Attendance"}
+              </Button>
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-green-100">
-                <UserCheck className="h-5 w-5 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Present</p>
-                <p className="text-2xl font-bold">{stats.present}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-red-100">
-                <UserX className="h-5 w-5 text-red-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Absent</p>
-                <p className="text-2xl font-bold">{stats.absent}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-yellow-100">
-                <Timer className="h-5 w-5 text-yellow-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Half Day</p>
-                <p className="text-2xl font-bold">{stats.halfDay}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Filters */}
       <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search by name, email, or employee ID..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="PRESENT">Present</SelectItem>
-                <SelectItem value="ABSENT">Absent</SelectItem>
-                <SelectItem value="HALF_DAY">Half Day</SelectItem>
-                <SelectItem value="LEAVE">On Leave</SelectItem>
-              </SelectContent>
-            </Select>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Filter className="h-5 w-5" />
+              Filters
+            </CardTitle>
+            <Button variant="ghost" size="sm" onClick={clearFilters}>
+              <X className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
           </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <Label>Employee</Label>
+              <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All employees" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All employees</SelectItem>
+                  {employees.map((emp) => (
+                    <SelectItem key={emp.id} value={emp.id}>
+                      {emp.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Start Date</Label>
+              <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            </div>
+
+            <div className="space-y-2">
+              <Label>End Date</Label>
+              <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Status</Label>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All statuses" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All statuses</SelectItem>
+                  <SelectItem value="PRESENT">Present</SelectItem>
+                  <SelectItem value="ABSENT">Absent</SelectItem>
+                  <SelectItem value="HALF_DAY">Half Day</SelectItem>
+                  <SelectItem value="LEAVE">Leave</SelectItem>
+                  <SelectItem value="WEEKEND">Weekend</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <Button onClick={fetchAttendances} className="mt-4">
+            <Search className="mr-2 h-4 w-4" />
+            Apply Filters
+          </Button>
         </CardContent>
       </Card>
 
       {/* Attendance Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Attendance Records</CardTitle>
+          <CardTitle>Attendance Records ({attendances.length})</CardTitle>
           <CardDescription>
-            {filteredAttendances.length} record(s) for{" "}
-            {new Date(selectedDate).toLocaleDateString()}
+            {selectedEmployee !== "ALL" && employees.find(e => e.id === selectedEmployee) && (
+              <span>Showing records for {employees.find(e => e.id === selectedEmployee).name}</span>
+            )}
+            {startDate && endDate && (
+              <span className="ml-2">from {startDate} to {endDate}</span>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {loading ? (
-            <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="flex items-center gap-4">
-                  <Skeleton className="h-10 w-10 rounded-full" />
-                  <div className="space-y-2 flex-1">
-                    <Skeleton className="h-4 w-1/4" />
-                    <Skeleton className="h-3 w-1/3" />
-                  </div>
-                </div>
-              ))}
+          {loadingData ? (
+            <div className="space-y-2">
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
+            </div>
+          ) : attendances.length === 0 ?   (
+            <div className="text-center py-8 text-muted-foreground">
+              No attendance records found. Try adjusting your filters.
             </div>
           ) : (
-            <div className="rounded-lg border overflow-hidden">
+            <div className="rounded-md border">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-slate-50">
+                  <TableRow>
                     <TableHead>Employee</TableHead>
-                    <TableHead>Check-in</TableHead>
-                    <TableHead>Check-out</TableHead>
+                    <TableHead>Employee ID</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Check In</TableHead>
+                    <TableHead>Check Out</TableHead>
                     <TableHead>Work Hours</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Remarks</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredAttendances.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center py-8">
-                        <div className="flex flex-col items-center text-muted-foreground">
-                          <Clock className="h-12 w-12 mb-2 opacity-20" />
-                          <p>No attendance records found</p>
-                          <p className="text-sm">
-                            {searchQuery || statusFilter !== "all"
-                              ? "Try adjusting your filters"
-                              : "No one has checked in yet"}
-                          </p>
+                  {attendances.map((attendance) => (
+                    <TableRow key={attendance.id}>
+                      <TableCell className="font-medium">{attendance.user.name}</TableCell>
+                      <TableCell>{attendance.user.employeeId || "-"}</TableCell>
+                      <TableCell>{new Date(attendance.date).toLocaleDateString("en-IN")}</TableCell>
+                      <TableCell className="text-sm">{attendance.checkIn || "-"}</TableCell>
+                      <TableCell className="text-sm">{attendance.checkOut || "-"}</TableCell>
+                      <TableCell>{attendance.workHours ? `${attendance.workHours} hrs` : "-"}</TableCell>
+                      <TableCell>{getStatusBadge(attendance.status)}</TableCell>
+                      <TableCell className="max-w-xs">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground truncate">
+                            {attendance.remarks || "-"}
+                          </span>
+                          {attendance.isManual && (
+                            <Badge variant="outline" className="text-xs">Manual</Badge>
+                          )}
                         </div>
                       </TableCell>
                     </TableRow>
-                  ) : (
-                    filteredAttendances.map((attendance) => (
-                      <TableRow
-                        key={attendance.id}
-                        className="hover:bg-slate-50/50"
-                      >
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-9 w-9">
-                              <AvatarFallback className="bg-primary/10 text-primary text-sm">
-                                {attendance.user?.name?.charAt(0).toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="font-medium">
-                                {attendance.user?.name}
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                {attendance.user?.employeeId || attendance.user?.email}
-                              </p>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-green-500" />
-                            <span className="font-mono text-sm">
-                              {formatTime(attendance.checkIn)}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-red-500" />
-                            <span className="font-mono text-sm">
-                              {formatTime(attendance.checkOut)}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <span className="font-medium">
-                            {formatWorkHours(attendance.workHours)}
-                          </span>
-                        </TableCell>
-                        <TableCell>{getStatusBadge(attendance.status)}</TableCell>
-                        <TableCell className="text-muted-foreground max-w-[200px] truncate">
-                          {attendance.remarks || "—"}
-                          {attendance.isManual && (
-                            <Badge variant="outline" className="ml-2 text-xs">
-                              Manual
-                            </Badge>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
+                  ))}
                 </TableBody>
               </Table>
             </div>
