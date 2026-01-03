@@ -12,7 +12,7 @@ export default function AdminLayout({ children }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && (! user || user.role !== "ADMIN")) {
+    if (!loading && (! user || user.role !== "HR")) {
       router.push("/");
     }
   }, [user, loading, router]);
@@ -25,7 +25,7 @@ export default function AdminLayout({ children }) {
     );
   }
 
-  if (!user || user.role !== "ADMIN") {
+  if (!user || user.role !== "HR") {
     return null;
   }
 
@@ -35,7 +35,7 @@ export default function AdminLayout({ children }) {
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r min-h-screen p-4">
           <div className="mb-8">
-            <h2 className="text-xl font-bold">Admin Panel</h2>
+            <h2 className="text-xl font-bold">HR Panel</h2>
             <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
           

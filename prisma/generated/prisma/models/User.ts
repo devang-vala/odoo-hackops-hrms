@@ -20,8 +20,22 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  paidLeaveBalance: number | null
+  sickLeaveBalance: number | null
+  casualLeaveBalance: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  paidLeaveBalance: number | null
+  sickLeaveBalance: number | null
+  casualLeaveBalance: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -33,6 +47,9 @@ export type UserMinAggregateOutputType = {
   googleId: string | null
   employeeId: string | null
   phone: string | null
+  paidLeaveBalance: number | null
+  sickLeaveBalance: number | null
+  casualLeaveBalance: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +63,9 @@ export type UserMaxAggregateOutputType = {
   googleId: string | null
   employeeId: string | null
   phone: string | null
+  paidLeaveBalance: number | null
+  sickLeaveBalance: number | null
+  casualLeaveBalance: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,11 +79,26 @@ export type UserCountAggregateOutputType = {
   googleId: number
   employeeId: number
   phone: number
+  paidLeaveBalance: number
+  sickLeaveBalance: number
+  casualLeaveBalance: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  paidLeaveBalance?: true
+  sickLeaveBalance?: true
+  casualLeaveBalance?: true
+}
+
+export type UserSumAggregateInputType = {
+  paidLeaveBalance?: true
+  sickLeaveBalance?: true
+  casualLeaveBalance?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -74,6 +109,9 @@ export type UserMinAggregateInputType = {
   googleId?: true
   employeeId?: true
   phone?: true
+  paidLeaveBalance?: true
+  sickLeaveBalance?: true
+  casualLeaveBalance?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -87,6 +125,9 @@ export type UserMaxAggregateInputType = {
   googleId?: true
   employeeId?: true
   phone?: true
+  paidLeaveBalance?: true
+  sickLeaveBalance?: true
+  casualLeaveBalance?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +141,9 @@ export type UserCountAggregateInputType = {
   googleId?: true
   employeeId?: true
   phone?: true
+  paidLeaveBalance?: true
+  sickLeaveBalance?: true
+  casualLeaveBalance?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -143,6 +187,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -173,6 +229,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -186,9 +244,14 @@ export type UserGroupByOutputType = {
   googleId: string | null
   employeeId: string | null
   phone: string | null
+  paidLeaveBalance: number
+  sickLeaveBalance: number
+  casualLeaveBalance: number
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -220,9 +283,15 @@ export type UserWhereInput = {
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   employeeId?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
+  paidLeaveBalance?: Prisma.IntFilter<"User"> | number
+  sickLeaveBalance?: Prisma.IntFilter<"User"> | number
+  casualLeaveBalance?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordResets?: Prisma.PasswordResetListRelationFilter
+  attendances?: Prisma.AttendanceListRelationFilter
+  leaves?: Prisma.LeaveListRelationFilter
+  approvedLeaves?: Prisma.LeaveListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -234,9 +303,15 @@ export type UserOrderByWithRelationInput = {
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidLeaveBalance?: Prisma.SortOrder
+  sickLeaveBalance?: Prisma.SortOrder
+  casualLeaveBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   passwordResets?: Prisma.PasswordResetOrderByRelationAggregateInput
+  attendances?: Prisma.AttendanceOrderByRelationAggregateInput
+  leaves?: Prisma.LeaveOrderByRelationAggregateInput
+  approvedLeaves?: Prisma.LeaveOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -251,9 +326,15 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   phone?: Prisma.StringNullableFilter<"User"> | string | null
+  paidLeaveBalance?: Prisma.IntFilter<"User"> | number
+  sickLeaveBalance?: Prisma.IntFilter<"User"> | number
+  casualLeaveBalance?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordResets?: Prisma.PasswordResetListRelationFilter
+  attendances?: Prisma.AttendanceListRelationFilter
+  leaves?: Prisma.LeaveListRelationFilter
+  approvedLeaves?: Prisma.LeaveListRelationFilter
 }, "id" | "email" | "googleId" | "employeeId">
 
 export type UserOrderByWithAggregationInput = {
@@ -265,11 +346,16 @@ export type UserOrderByWithAggregationInput = {
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidLeaveBalance?: Prisma.SortOrder
+  sickLeaveBalance?: Prisma.SortOrder
+  casualLeaveBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -284,6 +370,9 @@ export type UserScalarWhereWithAggregatesInput = {
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   employeeId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  paidLeaveBalance?: Prisma.IntWithAggregatesFilter<"User"> | number
+  sickLeaveBalance?: Prisma.IntWithAggregatesFilter<"User"> | number
+  casualLeaveBalance?: Prisma.IntWithAggregatesFilter<"User"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -297,9 +386,15 @@ export type UserCreateInput = {
   googleId?: string | null
   employeeId?: string | null
   phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -311,9 +406,15 @@ export type UserUncheckedCreateInput = {
   googleId?: string | null
   employeeId?: string | null
   phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
 }
 
 export type UserUpdateInput = {
@@ -325,9 +426,15 @@ export type UserUpdateInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -339,9 +446,15 @@ export type UserUncheckedUpdateInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -353,6 +466,9 @@ export type UserCreateManyInput = {
   googleId?: string | null
   employeeId?: string | null
   phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -366,6 +482,9 @@ export type UserUpdateManyMutationInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -379,6 +498,9 @@ export type UserUncheckedUpdateManyInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -386,6 +508,11 @@ export type UserUncheckedUpdateManyInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -397,8 +524,17 @@ export type UserCountOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  paidLeaveBalance?: Prisma.SortOrder
+  sickLeaveBalance?: Prisma.SortOrder
+  casualLeaveBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  paidLeaveBalance?: Prisma.SortOrder
+  sickLeaveBalance?: Prisma.SortOrder
+  casualLeaveBalance?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -410,6 +546,9 @@ export type UserMaxOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  paidLeaveBalance?: Prisma.SortOrder
+  sickLeaveBalance?: Prisma.SortOrder
+  casualLeaveBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -423,8 +562,61 @@ export type UserMinOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  paidLeaveBalance?: Prisma.SortOrder
+  sickLeaveBalance?: Prisma.SortOrder
+  casualLeaveBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  paidLeaveBalance?: Prisma.SortOrder
+  sickLeaveBalance?: Prisma.SortOrder
+  casualLeaveBalance?: Prisma.SortOrder
+}
+
+export type UserCreateNestedOneWithoutAttendancesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAttendancesInput, Prisma.UserUncheckedCreateWithoutAttendancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAttendancesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAttendancesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAttendancesInput, Prisma.UserUncheckedCreateWithoutAttendancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAttendancesInput
+  upsert?: Prisma.UserUpsertWithoutAttendancesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAttendancesInput, Prisma.UserUpdateWithoutAttendancesInput>, Prisma.UserUncheckedUpdateWithoutAttendancesInput>
+}
+
+export type UserCreateNestedOneWithoutLeavesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLeavesInput, Prisma.UserUncheckedCreateWithoutLeavesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLeavesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutApprovedLeavesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedLeavesInput, Prisma.UserUncheckedCreateWithoutApprovedLeavesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedLeavesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLeavesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLeavesInput, Prisma.UserUncheckedCreateWithoutLeavesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLeavesInput
+  upsert?: Prisma.UserUpsertWithoutLeavesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLeavesInput, Prisma.UserUpdateWithoutLeavesInput>, Prisma.UserUncheckedUpdateWithoutLeavesInput>
+}
+
+export type UserUpdateOneWithoutApprovedLeavesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedLeavesInput, Prisma.UserUncheckedCreateWithoutApprovedLeavesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedLeavesInput
+  upsert?: Prisma.UserUpsertWithoutApprovedLeavesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovedLeavesInput, Prisma.UserUpdateWithoutApprovedLeavesInput>, Prisma.UserUncheckedUpdateWithoutApprovedLeavesInput>
 }
 
 export type UserCreateNestedOneWithoutPasswordResetsInput = {
@@ -441,12 +633,284 @@ export type UserUpdateOneRequiredWithoutPasswordResetsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetsInput, Prisma.UserUpdateWithoutPasswordResetsInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetsInput>
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
+}
+
+export type UserCreateWithoutAttendancesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+}
+
+export type UserUncheckedCreateWithoutAttendancesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+}
+
+export type UserCreateOrConnectWithoutAttendancesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAttendancesInput, Prisma.UserUncheckedCreateWithoutAttendancesInput>
+}
+
+export type UserUpsertWithoutAttendancesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAttendancesInput, Prisma.UserUncheckedUpdateWithoutAttendancesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAttendancesInput, Prisma.UserUncheckedCreateWithoutAttendancesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAttendancesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAttendancesInput, Prisma.UserUncheckedUpdateWithoutAttendancesInput>
+}
+
+export type UserUpdateWithoutAttendancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAttendancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+}
+
+export type UserCreateWithoutLeavesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+}
+
+export type UserUncheckedCreateWithoutLeavesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+}
+
+export type UserCreateOrConnectWithoutLeavesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLeavesInput, Prisma.UserUncheckedCreateWithoutLeavesInput>
+}
+
+export type UserCreateWithoutApprovedLeavesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutApprovedLeavesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutApprovedLeavesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovedLeavesInput, Prisma.UserUncheckedCreateWithoutApprovedLeavesInput>
+}
+
+export type UserUpsertWithoutLeavesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLeavesInput, Prisma.UserUncheckedUpdateWithoutLeavesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLeavesInput, Prisma.UserUncheckedCreateWithoutLeavesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLeavesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLeavesInput, Prisma.UserUncheckedUpdateWithoutLeavesInput>
+}
+
+export type UserUpdateWithoutLeavesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLeavesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+}
+
+export type UserUpsertWithoutApprovedLeavesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApprovedLeavesInput, Prisma.UserUncheckedUpdateWithoutApprovedLeavesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovedLeavesInput, Prisma.UserUncheckedCreateWithoutApprovedLeavesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApprovedLeavesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApprovedLeavesInput, Prisma.UserUncheckedUpdateWithoutApprovedLeavesInput>
+}
+
+export type UserUpdateWithoutApprovedLeavesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApprovedLeavesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPasswordResetsInput = {
@@ -458,8 +922,14 @@ export type UserCreateWithoutPasswordResetsInput = {
   googleId?: string | null
   employeeId?: string | null
   phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
 }
 
 export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -471,8 +941,14 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   googleId?: string | null
   employeeId?: string | null
   phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
 }
 
 export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -500,8 +976,14 @@ export type UserUpdateWithoutPasswordResetsInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -513,8 +995,14 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
 }
 
 
@@ -524,10 +1012,16 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
 
 export type UserCountOutputType = {
   passwordResets: number
+  attendances: number
+  leaves: number
+  approvedLeaves: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   passwordResets?: boolean | UserCountOutputTypeCountPasswordResetsArgs
+  attendances?: boolean | UserCountOutputTypeCountAttendancesArgs
+  leaves?: boolean | UserCountOutputTypeCountLeavesArgs
+  approvedLeaves?: boolean | UserCountOutputTypeCountApprovedLeavesArgs
 }
 
 /**
@@ -547,6 +1041,27 @@ export type UserCountOutputTypeCountPasswordResetsArgs<ExtArgs extends runtime.T
   where?: Prisma.PasswordResetWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttendanceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLeavesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeaveWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApprovedLeavesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeaveWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -557,9 +1072,15 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   googleId?: boolean
   employeeId?: boolean
   phone?: boolean
+  paidLeaveBalance?: boolean
+  sickLeaveBalance?: boolean
+  casualLeaveBalance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   passwordResets?: boolean | Prisma.User$passwordResetsArgs<ExtArgs>
+  attendances?: boolean | Prisma.User$attendancesArgs<ExtArgs>
+  leaves?: boolean | Prisma.User$leavesArgs<ExtArgs>
+  approvedLeaves?: boolean | Prisma.User$approvedLeavesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -572,6 +1093,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   googleId?: boolean
   employeeId?: boolean
   phone?: boolean
+  paidLeaveBalance?: boolean
+  sickLeaveBalance?: boolean
+  casualLeaveBalance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -585,6 +1109,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   googleId?: boolean
   employeeId?: boolean
   phone?: boolean
+  paidLeaveBalance?: boolean
+  sickLeaveBalance?: boolean
+  casualLeaveBalance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -598,13 +1125,19 @@ export type UserSelectScalar = {
   googleId?: boolean
   employeeId?: boolean
   phone?: boolean
+  paidLeaveBalance?: boolean
+  sickLeaveBalance?: boolean
+  casualLeaveBalance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "googleId" | "employeeId" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "googleId" | "employeeId" | "phone" | "paidLeaveBalance" | "sickLeaveBalance" | "casualLeaveBalance" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   passwordResets?: boolean | Prisma.User$passwordResetsArgs<ExtArgs>
+  attendances?: boolean | Prisma.User$attendancesArgs<ExtArgs>
+  leaves?: boolean | Prisma.User$leavesArgs<ExtArgs>
+  approvedLeaves?: boolean | Prisma.User$approvedLeavesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -614,6 +1147,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     passwordResets: Prisma.$PasswordResetPayload<ExtArgs>[]
+    attendances: Prisma.$AttendancePayload<ExtArgs>[]
+    leaves: Prisma.$LeavePayload<ExtArgs>[]
+    approvedLeaves: Prisma.$LeavePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -624,6 +1160,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     googleId: string | null
     employeeId: string | null
     phone: string | null
+    paidLeaveBalance: number
+    sickLeaveBalance: number
+    casualLeaveBalance: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1021,6 +1560,9 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   passwordResets<T extends Prisma.User$passwordResetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attendances<T extends Prisma.User$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  leaves<T extends Prisma.User$leavesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$leavesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvedLeaves<T extends Prisma.User$approvedLeavesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedLeavesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1058,6 +1600,9 @@ export interface UserFieldRefs {
   readonly googleId: Prisma.FieldRef<"User", 'String'>
   readonly employeeId: Prisma.FieldRef<"User", 'String'>
   readonly phone: Prisma.FieldRef<"User", 'String'>
+  readonly paidLeaveBalance: Prisma.FieldRef<"User", 'Int'>
+  readonly sickLeaveBalance: Prisma.FieldRef<"User", 'Int'>
+  readonly casualLeaveBalance: Prisma.FieldRef<"User", 'Int'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1469,6 +2014,78 @@ export type User$passwordResetsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.PasswordResetScalarFieldEnum | Prisma.PasswordResetScalarFieldEnum[]
+}
+
+/**
+ * User.attendances
+ */
+export type User$attendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Attendance
+   */
+  select?: Prisma.AttendanceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Attendance
+   */
+  omit?: Prisma.AttendanceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttendanceInclude<ExtArgs> | null
+  where?: Prisma.AttendanceWhereInput
+  orderBy?: Prisma.AttendanceOrderByWithRelationInput | Prisma.AttendanceOrderByWithRelationInput[]
+  cursor?: Prisma.AttendanceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttendanceScalarFieldEnum | Prisma.AttendanceScalarFieldEnum[]
+}
+
+/**
+ * User.leaves
+ */
+export type User$leavesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Leave
+   */
+  select?: Prisma.LeaveSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Leave
+   */
+  omit?: Prisma.LeaveOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeaveInclude<ExtArgs> | null
+  where?: Prisma.LeaveWhereInput
+  orderBy?: Prisma.LeaveOrderByWithRelationInput | Prisma.LeaveOrderByWithRelationInput[]
+  cursor?: Prisma.LeaveWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeaveScalarFieldEnum | Prisma.LeaveScalarFieldEnum[]
+}
+
+/**
+ * User.approvedLeaves
+ */
+export type User$approvedLeavesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Leave
+   */
+  select?: Prisma.LeaveSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Leave
+   */
+  omit?: Prisma.LeaveOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeaveInclude<ExtArgs> | null
+  where?: Prisma.LeaveWhereInput
+  orderBy?: Prisma.LeaveOrderByWithRelationInput | Prisma.LeaveOrderByWithRelationInput[]
+  cursor?: Prisma.LeaveWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeaveScalarFieldEnum | Prisma.LeaveScalarFieldEnum[]
 }
 
 /**

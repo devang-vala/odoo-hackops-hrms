@@ -9,10 +9,18 @@ model User {
   // Minimal HRMS fields
   employeeId     String?         @unique  // Employee ID for HRMS
   phone          String?
+
+  // Leave Balance
+  paidLeaveBalance    Int @default(20)
+  sickLeaveBalance    Int @default(10)
+  casualLeaveBalance  Int @default(12)
   
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   
   // Relations
   passwordResets PasswordReset[]
+  attendances    Attendance[]
+  leaves         Leave[]
+  approvedLeaves Leave[]         @relation("ApprovedLeaves")
 }

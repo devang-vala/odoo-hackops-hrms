@@ -8,6 +8,8 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Attendance.ts'
+export type * from './models/Leave.ts'
 export type * from './models/PasswordReset.ts'
 export type * from './models/User.ts'
 export type * from './commonInputTypes.ts'

@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/auth-middleware";
+import { requireHR } from "@/lib/auth-middleware";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request) {
   try {
-    const { user, response } = await requireAdmin(request);
+    const { user, response } = await requireHR(request);
 
     if (response) {
       return response; // Return error response (401 or 403)
@@ -18,7 +18,7 @@ export async function GET(request) {
     // Build where clause
     const where = {};
     
-    if (role && (role === "USER" || role === "ADMIN")) {
+    if (role && (role === "EMPLOYEE" || role === "HR")) {
       where.role = role;
     }
     

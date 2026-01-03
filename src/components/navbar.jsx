@@ -62,7 +62,7 @@ export default function Navbar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href={user.role === "ADMIN" ?  "/admin" : "/"} className="cursor-pointer">
+                  <Link href={user.role === "HR" ?  "/admin" : "/"} className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
                     Dashboard
                   </Link>

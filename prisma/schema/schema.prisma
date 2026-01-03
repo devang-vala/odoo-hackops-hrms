@@ -11,3 +11,26 @@ enum UserRole {
   EMPLOYEE 
   HR       
 }
+
+enum LeaveType {
+  PAID
+  SICK
+  UNPAID
+  CASUAL
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  HALF_DAY
+  LEAVE
+  WEEKEND
+  HOLIDAY
+}

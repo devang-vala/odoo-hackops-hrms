@@ -22,8 +22,8 @@ export default function AdminDashboard() {
       const users = response.data.users;
       setStats({
         total: users.length,
-        users: users.filter((u) => u.role === "USER").length,
-        admins: users.filter((u) => u.role === "ADMIN").length,
+        users: users.filter((u) => u.role === "EMPLOYEE").length,
+        admins: users.filter((u) => u.role === "HR").length,
       });
     } catch (error) {
       console.error("Failed to fetch stats:", error);
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Admins</CardTitle>
+            <CardTitle className="text-sm font-medium">HR Users</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>

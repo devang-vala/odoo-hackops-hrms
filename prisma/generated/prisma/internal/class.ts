@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "model PasswordReset {\n  id        String   @id @default(cuid())\n  userId    String\n  token     String   @unique\n  expires   DateTime\n  createdAt DateTime @default(now())\n  used      Boolean  @default(false)\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum UserRole {\n  EMPLOYEE\n  HR\n}\n\nmodel User {\n  id       String   @id @default(cuid())\n  name     String\n  email    String   @unique\n  password String? // null for Google OAuth users\n  role     UserRole @default(EMPLOYEE)\n  googleId String?  @unique\n\n  // Minimal HRMS fields\n  employeeId String? @unique // Employee ID for HRMS\n  phone      String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relations\n  passwordResets PasswordReset[]\n}\n",
+  "inlineSchema": "model Attendance {\n  id        String           @id @default(cuid())\n  userId    String\n  date      DateTime         @db.Date\n  checkIn   DateTime?\n  checkOut  DateTime?\n  status    AttendanceStatus @default(PRESENT)\n  workHours Float?\n  remarks   String?\n  isManual  Boolean          @default(false)\n  createdBy String?\n  createdAt DateTime         @default(now())\n  updatedAt DateTime         @updatedAt\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, date])\n  @@index([userId])\n  @@index([date])\n  @@index([status])\n}\n\nmodel Leave {\n  id          String      @id @default(cuid())\n  userId      String\n  leaveType   LeaveType\n  startDate   DateTime    @db.Date\n  endDate     DateTime    @db.Date\n  totalDays   Int\n  reason      String\n  status      LeaveStatus @default(PENDING)\n  approvedBy  String?\n  approvedAt  DateTime?\n  rejectedAt  DateTime?\n  hrComments  String?\n  cancelledAt DateTime?\n  createdAt   DateTime    @default(now())\n  updatedAt   DateTime    @updatedAt\n\n  user     User  @relation(fields: [userId], references: [id], onDelete: Cascade)\n  approver User? @relation(\"ApprovedLeaves\", fields: [approvedBy], references: [id])\n\n  @@index([userId])\n  @@index([status])\n  @@index([startDate])\n  @@index([endDate])\n}\n\nmodel PasswordReset {\n  id        String   @id @default(cuid())\n  userId    String\n  token     String   @unique\n  expires   DateTime\n  createdAt DateTime @default(now())\n  used      Boolean  @default(false)\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum UserRole {\n  EMPLOYEE\n  HR\n}\n\nenum LeaveType {\n  PAID\n  SICK\n  UNPAID\n  CASUAL\n}\n\nenum LeaveStatus {\n  PENDING\n  APPROVED\n  REJECTED\n  CANCELLED\n}\n\nenum AttendanceStatus {\n  PRESENT\n  ABSENT\n  HALF_DAY\n  LEAVE\n  WEEKEND\n  HOLIDAY\n}\n\nmodel User {\n  id       String   @id @default(cuid())\n  name     String\n  email    String   @unique\n  password String? // null for Google OAuth users\n  role     UserRole @default(EMPLOYEE)\n  googleId String?  @unique\n\n  // Minimal HRMS fields\n  employeeId String? @unique // Employee ID for HRMS\n  phone      String?\n\n  // Leave Balance\n  paidLeaveBalance   Int @default(20)\n  sickLeaveBalance   Int @default(10)\n  casualLeaveBalance Int @default(12)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relations\n  passwordResets PasswordReset[]\n  attendances    Attendance[]\n  leaves         Leave[]\n  approvedLeaves Leave[]         @relation(\"ApprovedLeaves\")\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"PasswordReset\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetToUser\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"googleId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"employeeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"passwordResets\",\"kind\":\"object\",\"type\":\"PasswordReset\",\"relationName\":\"PasswordResetToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Attendance\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"checkIn\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"checkOut\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"AttendanceStatus\"},{\"name\":\"workHours\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"remarks\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isManual\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AttendanceToUser\"}],\"dbName\":null},\"Leave\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"leaveType\",\"kind\":\"enum\",\"type\":\"LeaveType\"},{\"name\":\"startDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"endDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"totalDays\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"LeaveStatus\"},{\"name\":\"approvedBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"approvedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"rejectedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"hrComments\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cancelledAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"LeaveToUser\"},{\"name\":\"approver\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ApprovedLeaves\"}],\"dbName\":null},\"PasswordReset\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetToUser\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"googleId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"employeeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paidLeaveBalance\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sickLeaveBalance\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"casualLeaveBalance\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"passwordResets\",\"kind\":\"object\",\"type\":\"PasswordReset\",\"relationName\":\"PasswordResetToUser\"},{\"name\":\"attendances\",\"kind\":\"object\",\"type\":\"Attendance\",\"relationName\":\"AttendanceToUser\"},{\"name\":\"leaves\",\"kind\":\"object\",\"type\":\"Leave\",\"relationName\":\"LeaveToUser\"},{\"name\":\"approvedLeaves\",\"kind\":\"object\",\"type\":\"Leave\",\"relationName\":\"ApprovedLeaves\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -58,8 +58,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more PasswordResets
-   * const passwordResets = await prisma.passwordReset.findMany()
+   * // Fetch zero or more Attendances
+   * const attendances = await prisma.attendance.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -80,8 +80,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more PasswordResets
- * const passwordResets = await prisma.passwordReset.findMany()
+ * // Fetch zero or more Attendances
+ * const attendances = await prisma.attendance.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -175,6 +175,26 @@ export interface PrismaClient<
   }>>
 
       /**
+   * `prisma.attendance`: Exposes CRUD operations for the **Attendance** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Attendances
+    * const attendances = await prisma.attendance.findMany()
+    * ```
+    */
+  get attendance(): Prisma.AttendanceDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.leave`: Exposes CRUD operations for the **Leave** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Leaves
+    * const leaves = await prisma.leave.findMany()
+    * ```
+    */
+  get leave(): Prisma.LeaveDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
    * `prisma.passwordReset`: Exposes CRUD operations for the **PasswordReset** model.
     * Example usage:
     * ```ts

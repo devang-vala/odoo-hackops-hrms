@@ -51,6 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Attendance: 'Attendance',
+  Leave: 'Leave',
   PasswordReset: 'PasswordReset',
   User: 'User'
 } as const
@@ -69,6 +71,45 @@ export const TransactionIsolationLevel = {
 } as const
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const AttendanceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  checkIn: 'checkIn',
+  checkOut: 'checkOut',
+  status: 'status',
+  workHours: 'workHours',
+  remarks: 'remarks',
+  isManual: 'isManual',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
+
+
+export const LeaveScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  leaveType: 'leaveType',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  totalDays: 'totalDays',
+  reason: 'reason',
+  status: 'status',
+  approvedBy: 'approvedBy',
+  approvedAt: 'approvedAt',
+  rejectedAt: 'rejectedAt',
+  hrComments: 'hrComments',
+  cancelledAt: 'cancelledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeaveScalarFieldEnum = (typeof LeaveScalarFieldEnum)[keyof typeof LeaveScalarFieldEnum]
 
 
 export const PasswordResetScalarFieldEnum = {
@@ -92,6 +133,9 @@ export const UserScalarFieldEnum = {
   googleId: 'googleId',
   employeeId: 'employeeId',
   phone: 'phone',
+  paidLeaveBalance: 'paidLeaveBalance',
+  sickLeaveBalance: 'sickLeaveBalance',
+  casualLeaveBalance: 'casualLeaveBalance',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

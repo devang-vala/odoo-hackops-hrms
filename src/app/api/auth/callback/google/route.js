@@ -80,7 +80,7 @@ export async function GET(request) {
     if (!user) {
       console.log("Creating new user...");
       // Determine role based on email
-      const userRole = isAdminEmail(googleUser.email) ? "ADMIN" : "USER";
+      const userRole = isAdminEmail(googleUser.email) ? "HR" : "EMPLOYEE";
 
       // Create new user
       user = await prisma.user.create({
@@ -108,7 +108,7 @@ export async function GET(request) {
     const token = generateToken(user);
 
     // Redirect to frontend with token
-    const redirectUrl = user.role === "ADMIN" ?  "/admin" : state;
+    const redirectUrl = user.role === "HR" ?  "/admin" : state;
     const response = NextResponse.redirect(
       `${appUrl}/auth/callback?token=${token}&redirect=${redirectUrl}`
     );

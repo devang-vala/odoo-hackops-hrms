@@ -98,7 +98,7 @@ export default function UsersPage() {
                 <TableCell className="font-medium">{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
-                  <Badge variant={user.role === "ADMIN" ?  "default" : "secondary"}>
+                  <Badge variant={user.role === "HR" ?  "default" : "secondary"}>
                     {user.role}
                   </Badge>
                 </TableCell>
@@ -115,14 +115,14 @@ export default function UsersPage() {
                     <DropdownMenuContent align="end">
                       {user.role === "USER" ?  (
                         <DropdownMenuItem
-                          onClick={() => updateRole(user.id, "ADMIN")}
+                          onClick={() => updateRole(user.id, "HR")}
                         >
                           <Shield className="mr-2 h-4 w-4" />
                           Make Admin
                         </DropdownMenuItem>
                       ) : (
                         <DropdownMenuItem
-                          onClick={() => updateRole(user.id, "USER")}
+                          onClick={() => updateRole(user.id, "EMPLOYEE")}
                         >
                           <User className="mr-2 h-4 w-4" />
                           Make User

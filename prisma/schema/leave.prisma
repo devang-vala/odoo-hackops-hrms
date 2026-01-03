@@ -1,0 +1,25 @@
+model Leave {
+  id          String      @id @default(cuid())
+  userId      String
+  leaveType   LeaveType
+  startDate   DateTime    @db.Date
+  endDate     DateTime    @db.Date
+  totalDays   Int
+  reason      String
+  status      LeaveStatus @default(PENDING)
+  approvedBy  String?  
+  approvedAt  DateTime?  
+  rejectedAt  DateTime?
+  hrComments  String?  
+  cancelledAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user     User  @relation(fields: [userId], references: [id], onDelete:   Cascade)
+  approver User?  @relation("ApprovedLeaves", fields: [approvedBy], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+}

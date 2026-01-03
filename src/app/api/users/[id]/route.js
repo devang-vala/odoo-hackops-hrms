@@ -13,7 +13,7 @@ export async function GET(request, { params }) {
     const { id } = params;
 
     // Users can only view their own profile, admins can view any
-    if (user.id !== id && user.role !== "ADMIN") {
+    if (user.id !== id && user.role !== "HR") {
       return NextResponse.json(
         { 
           success:  false,
@@ -76,12 +76,12 @@ export async function DELETE(request, { params }) {
       return response;
     }
 
-    if (user.role !== "ADMIN") {
+    if (user.role !== "HR") {
       return NextResponse.json(
         { 
           success: false,
           error: "Forbidden",
-          message: "Only admins can delete users" 
+          message: "Only HR can delete users" 
         },
         { status: 403 }
       );

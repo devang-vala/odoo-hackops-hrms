@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/auth-middleware";
+import { requireHR } from "@/lib/auth-middleware";
 import { prisma } from "@/lib/prisma";
 
 export async function PATCH(request, { params }) {
   try {
-    const { user, response } = await requireAdmin(request);
+    const { user, response } = await requireHR(request);
 
     if (response) {
       return response;
@@ -14,12 +14,12 @@ export async function PATCH(request, { params }) {
     const body = await request.json();
     const { role } = body;
 
-    if (!role || (role !== "USER" && role !== "ADMIN")) {
+    if (!role || (role !== "EMPLOYEE" && role !== "HR")) {
       return NextResponse.json(
         { 
           success: false,
           error: "Invalid role",
-          message: "Role must be either USER or ADMIN" 
+          message: "Role must be either EMPLOYEE or HR" 
         },
         { status: 400 }
       );
@@ -40,12 +40,12 @@ export async function PATCH(request, { params }) {
       );
     }
 
-    if (targetUser.id === user.id && role === "USER") {
+    if (targetUser.id === user.id && role === "EMPLOYEE") {
       return NextResponse.json(
         { 
           success: false,
           error:  "Invalid operation",
-          message:  "You cannot demote yourself from admin" 
+          message:  "You cannot demote yourself from HR" 
         },
         { status: 400 }
       );

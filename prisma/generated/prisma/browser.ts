@@ -18,6 +18,16 @@ export { Prisma }
 export * as $Enums from './enums.ts'
 export * from './enums.ts';
 /**
+ * Model Attendance
+ * 
+ */
+export type Attendance = Prisma.AttendanceModel
+/**
+ * Model Leave
+ * 
+ */
+export type Leave = Prisma.LeaveModel
+/**
  * Model PasswordReset
  * 
  */

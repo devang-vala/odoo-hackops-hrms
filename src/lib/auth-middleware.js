@@ -4,7 +4,6 @@ import { prisma } from "./prisma";
 
 export async function authenticate(request) {
   try {
-    // Get token from Authorization header
     const authHeader = request.headers.get("authorization");
     
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -12,15 +11,13 @@ export async function authenticate(request) {
         error: {
           success: false,
           error: "Unauthorized",
-          message: "No token provided.Please include 'Authorization: Bearer <token>' header",
+          message: "No token provided.  Please include 'Authorization: Bearer <token>' header",
         },
         status: 401,
       };
     }
 
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-
-    // Verify token
+    const token = authHeader.substring(7);
     const decoded = verifyToken(token);
 
     if (!decoded) {
@@ -34,15 +31,19 @@ export async function authenticate(request) {
       };
     }
 
-    // Get fresh user data from database
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
       select: {
         id: true,
         email: true,
-        name:  true,
+        name: true,
         role: true,
         googleId: true,
+        employeeId: true,
+        phone:  true,
+        paidLeaveBalance: true,
+        sickLeaveBalance: true,
+        casualLeaveBalance: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -55,7 +56,7 @@ export async function authenticate(request) {
           error: "Unauthorized",
           message: "User not found",
         },
-        status:  401,
+        status: 401,
       };
     }
 
@@ -85,22 +86,22 @@ export async function requireAuth(request) {
   return { user: result.user };
 }
 
-export async function requireAdmin(request) {
+export async function requireHR(request) {
   const result = await authenticate(request);
   
   if (result.error) {
     return {
-      response: NextResponse.json(result.error, { status: result.status }),
+      response: NextResponse.json(result.error, { status: result. status }),
     };
   }
 
-  if (result.user.role !== "ADMIN") {
+  if (result.user.role !== "HR") {
     return {
       response: NextResponse.json(
         {
           success: false,
-          error:  "Forbidden",
-          message:  "Admin access required",
+          error: "Forbidden",
+          message: "HR access required",
         },
         { status: 403 }
       ),
