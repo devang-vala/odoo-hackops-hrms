@@ -34,7 +34,7 @@ export default function AuthPage() {
     if (errorParam === "oauth_failed") {
       setError("Google sign-in failed. Please try again.");
     } else if (errorParam === "no_token") {
-      setError("Authentication failed. Please try again.");
+      setError("Authentication failed.Please try again.");
     }
   }, [searchParams]);
 
@@ -46,7 +46,7 @@ export default function AuthPage() {
     try {
       await login(loginEmail, loginPassword);
     } catch (err) {
-      setError(err. response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -209,7 +209,7 @@ export default function AuthPage() {
                     type="email"
                     placeholder="name@example.com"
                     value={signupEmail}
-                    onChange={(e) => setSignupEmail(e. target.value)}
+                    onChange={(e) => setSignupEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -257,7 +257,7 @@ export default function AuthPage() {
                   <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
-                      d="M22.56 12.25c0-. 78-.07-1.53-. 2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                     />
                     <path
                       fill="currentColor"
@@ -265,7 +265,7 @@ export default function AuthPage() {
                     />
                     <path
                       fill="currentColor"
-                      d="M5.84 14.09c-.22-. 66-.35-1.36-. 35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
                     />
                     <path
                       fill="currentColor"

@@ -21,7 +21,7 @@ export async function POST(request) {
 
     // Password validation
     if (password.length < 6) {
-      return NextResponse. json(
+      return NextResponse.json(
         { 
           success: false,
           error:  "Weak password",
