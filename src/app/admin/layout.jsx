@@ -52,6 +52,18 @@ export default function AdminLayout({ children }) {
                 Users
               </Button>
             </Link>
+            <Link href="/admin/attendance">
+              <Button variant="ghost" className="w-full justify-start">
+                <Users className="mr-2 h-4 w-4" />
+                Attendance
+              </Button>
+            </Link>
+            <Link href="/admin/leaves">
+              <Button variant="ghost" className="w-full justify-start">
+                <Users className="mr-2 h-4 w-4" />
+                Leaves
+              </Button>
+            </Link>
           </nav>
 
           <div className="absolute bottom-4 left-4 right-4">

@@ -3,12 +3,26 @@ import { requireAuth } from "@/lib/auth-middleware";
 import { prisma } from "@/lib/prisma";
 import { getISTDateOnly } from "@/lib/timezone";
 
-export async function PATCH(request, { params }) {
+export async function PATCH(request, context) {
   try {
     const { user, response } = await requireAuth(request);
     if (response) return response;
 
+    // ✅ Fix: Await params
+    const params = await context.params;
     const { id } = params;
+
+    // Validate id
+    if (!id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid request",
+          message: "Leave ID is required",
+        },
+        { status: 400 }
+      );
+    }
 
     // Find leave request
     const leave = await prisma.leave.findUnique({

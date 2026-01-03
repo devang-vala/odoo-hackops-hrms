@@ -91,7 +91,7 @@ export async function requireHR(request) {
   
   if (result.error) {
     return {
-      response: NextResponse.json(result.error, { status: result. status }),
+      response: NextResponse.json(result.error, { status: result.status }),
     };
   }
 
