@@ -198,8 +198,8 @@ export default function TimeOffPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Time Off</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Time Off</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">
           Review and manage employee leave requests
         </p>
       </div>
@@ -218,21 +218,21 @@ export default function TimeOffPage() {
       )}
 
       {/* Stats Summary */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <Card
           className={`cursor-pointer transition-all ${
             activeTab === "all" ? "ring-2 ring-primary" : ""
           }`}
           onClick={() => setActiveTab("all")}
         >
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-blue-100">
-                <CalendarDays className="h-5 w-5 text-blue-600" />
+          <CardContent className="pt-4 sm:pt-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="p-2 sm:p-3 rounded-lg bg-blue-100">
+                <CalendarDays className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Total Requests</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Total Requests</p>
+                <p className="text-xl sm:text-2xl font-bold">{stats.total}</p>
               </div>
             </div>
           </CardContent>
@@ -243,14 +243,14 @@ export default function TimeOffPage() {
           }`}
           onClick={() => setActiveTab("pending")}
         >
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-yellow-100">
-                <AlertCircle className="h-5 w-5 text-yellow-600" />
+          <CardContent className="pt-4 sm:pt-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="p-2 sm:p-3 rounded-lg bg-yellow-100">
+                <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600" />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Pending</p>
-                <p className="text-2xl font-bold">{stats.pending}</p>
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">Pending</p>
+                <p className="text-xl sm:text-2xl font-bold">{stats.pending}</p>
               </div>
             </div>
           </CardContent>
@@ -261,14 +261,14 @@ export default function TimeOffPage() {
           }`}
           onClick={() => setActiveTab("approved")}
         >
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-green-100">
-                <CalendarCheck className="h-5 w-5 text-green-600" />
+          <CardContent className="pt-4 sm:pt-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="p-2 sm:p-3 rounded-lg bg-green-100">
+                <CalendarCheck className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Approved</p>
-                <p className="text-2xl font-bold">{stats.approved}</p>
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">Approved</p>
+                <p className="text-xl sm:text-2xl font-bold">{stats.approved}</p>
               </div>
             </div>
           </CardContent>
@@ -279,14 +279,14 @@ export default function TimeOffPage() {
           }`}
           onClick={() => setActiveTab("rejected")}
         >
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-red-100">
-                <CalendarX className="h-5 w-5 text-red-600" />
+          <CardContent className="pt-4 sm:pt-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="p-2 sm:p-3 rounded-lg bg-red-100">
+                <CalendarX className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Rejected</p>
-                <p className="text-2xl font-bold">{stats.rejected}</p>
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">Rejected</p>
+                <p className="text-xl sm:text-2xl font-bold">{stats.rejected}</p>
               </div>
             </div>
           </CardContent>
@@ -346,12 +346,13 @@ export default function TimeOffPage() {
             </div>
           ) : (
             <div className="rounded-lg border overflow-hidden">
+              <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-slate-50">
                     <TableHead>Employee</TableHead>
-                    <TableHead>Leave Type</TableHead>
-                    <TableHead>Duration</TableHead>
+                    <TableHead className="hidden sm:table-cell">Leave Type</TableHead>
+                    <TableHead className="hidden md:table-cell">Duration</TableHead>
                     <TableHead>Days</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
@@ -379,22 +380,23 @@ export default function TimeOffPage() {
                         className="hover:bg-slate-50/50"
                       >
                         <TableCell>
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-9 w-9">
-                              <AvatarFallback className="bg-primary/10 text-primary text-sm">
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            <Avatar className="h-8 w-8 sm:h-9 sm:w-9">
+                              <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">
                                 {leave.user?.name?.charAt(0).toUpperCase()}
                               </AvatarFallback>
                             </Avatar>
-                            <div>
-                              <p className="font-medium">{leave.user?.name}</p>
-                              <p className="text-sm text-muted-foreground">
+                            <div className="min-w-0">
+                              <p className="font-medium text-sm truncate">{leave.user?.name}</p>
+                              <p className="text-xs text-muted-foreground truncate">
                                 {leave.user?.employeeId || leave.user?.email}
                               </p>
+                              <div className="sm:hidden mt-1">{getTypeBadge(leave.leaveType)}</div>
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell>{getTypeBadge(leave.leaveType)}</TableCell>
-                        <TableCell>
+                        <TableCell className="hidden sm:table-cell">{getTypeBadge(leave.leaveType)}</TableCell>
+                        <TableCell className="hidden md:table-cell">
                           <div className="text-sm">
                             <p className="font-medium">{leave.startDate}</p>
                             <p className="text-muted-foreground">
@@ -446,6 +448,7 @@ export default function TimeOffPage() {
                   )}
                 </TableBody>
               </Table>
+              </div>
             </div>
           )}
         </CardContent>

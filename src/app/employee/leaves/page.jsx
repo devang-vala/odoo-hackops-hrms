@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Plus, Calendar as CalendarIcon, Briefcase, Heart, DollarSign, XCircle, MessageSquare, Eye } from "lucide-react";
+import { Plus, Calendar as CalendarIcon, Briefcase, Heart, DollarSign, XCircle, MessageSquare, Eye, CheckCircle2, AlertCircle } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -151,14 +151,14 @@ export default function EmployeeLeavesPage() {
   return (
      <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">My Leaves</h1>
+            <h1 className="text-3xl font-bold tracking-tight">My Leaves</h1>
             <p className="text-muted-foreground">Manage your leave requests and balance</p>
           </div>
           <Dialog open={applyDialogOpen} onOpenChange={setApplyDialogOpen}>
             <DialogTrigger asChild>
-              <Button>
+              <Button className="w-full sm:w-auto">
                 <Plus className="mr-2 h-4 w-4" />
                 Apply Leave
               </Button>
@@ -222,40 +222,46 @@ export default function EmployeeLeavesPage() {
 
         {/* Leave Balance */}
         {balance && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <Briefcase className="h-4 w-4" />
-                  Paid Leave
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{balance.paidLeaveBalance} days</div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Card className="border-blue-200 bg-blue-50/50">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-blue-100 shrink-0">
+                    <Briefcase className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm text-blue-700">Paid Leave</p>
+                    <p className="text-2xl font-bold text-blue-800">{balance.paidLeaveBalance} days</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <Heart className="h-4 w-4" />
-                  Sick Leave
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{balance.sickLeaveBalance} days</div>
+            <Card className="border-green-200 bg-green-50/50">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-green-100 shrink-0">
+                    <Heart className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm text-green-700">Sick Leave</p>
+                    <p className="text-2xl font-bold text-green-800">{balance.sickLeaveBalance} days</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <CalendarIcon className="h-4 w-4" />
-                  Casual Leave
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{balance.casualLeaveBalance} days</div>
+            <Card className="border-purple-200 bg-purple-50/50 sm:col-span-2 lg:col-span-1">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-purple-100 shrink-0">
+                    <CalendarIcon className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm text-purple-700">Casual Leave</p>
+                    <p className="text-2xl font-bold text-purple-800">{balance.casualLeaveBalance} days</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -268,140 +274,167 @@ export default function EmployeeLeavesPage() {
             <CardDescription>View and manage your leave requests</CardDescription>
           </CardHeader>
           <CardContent>
-            {loadingData ?   (
+            {loadingData ? (
               <div className="space-y-2">
                 <Skeleton className="h-12 w-full" />
                 <Skeleton className="h-12 w-full" />
                 <Skeleton className="h-12 w-full" />
               </div>
             ) : leaves.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                No leave requests found
+              <div className="text-center py-12 text-muted-foreground">
+                <CalendarIcon className="h-16 w-16 mx-auto mb-4 opacity-20" />
+                <h3 className="text-lg font-medium mb-2">No Leave Requests</h3>
+                <p className="text-sm">You haven't applied for any leaves yet</p>
               </div>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Leave Type</TableHead>
-                    <TableHead>Start Date</TableHead>
-                    <TableHead>End Date</TableHead>
-                    <TableHead>Days</TableHead>
-                    <TableHead>Reason</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {leaves.map((leave) => (
-                    <TableRow key={leave.id}>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          {getLeaveTypeIcon(leave.leaveType)}
-                          {leave.leaveType}
-                        </div>
-                      </TableCell>
-                      <TableCell>{new Date(leave.startDate).toLocaleDateString("en-IN")}</TableCell>
-                      <TableCell>{new Date(leave.endDate).toLocaleDateString("en-IN")}</TableCell>
-                      <TableCell>{leave.totalDays}</TableCell>
-                      <TableCell className="max-w-xs truncate">{leave.reason}</TableCell>
-                      <TableCell>{getStatusBadge(leave.status)}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          {/* View Details Button - Shows if there are HR comments */}
-                          {(leave.status === "APPROVED" || leave.status === "REJECTED") && leave.hrComments && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => openDetailsDialog(leave)}
-                              title="View HR comments"
-                            >
-                              <MessageSquare className="h-4 w-4 mr-1" />
-                              View
-                            </Button>
-                          )}
-                          
-                          {/* Cancel Button */}
-                          {(leave.status === "PENDING" || leave.status === "APPROVED") &&
-                            new Date(leave.startDate) > new Date() && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleCancelLeave(leave.id)}
-                              >
-                                <XCircle className="h-4 w-4 mr-1" />
-                                Cancel
-                              </Button>
-                            )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <div className="rounded-lg border overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-muted/50">
+                        <TableHead>Leave Type</TableHead>
+                        <TableHead>Start Date</TableHead>
+                        <TableHead>End Date</TableHead>
+                        <TableHead className="text-center">Days</TableHead>
+                        <TableHead className="hidden md:table-cell">Reason</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {leaves.map((leave) => (
+                        <TableRow key={leave.id}>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              {getLeaveTypeIcon(leave.leaveType)}
+                              <span className="font-medium">{leave.leaveType}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            {new Date(leave.startDate).toLocaleDateString("en-IN")}
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            {new Date(leave.endDate).toLocaleDateString("en-IN")}
+                          </TableCell>
+                          <TableCell className="text-center font-semibold">{leave.totalDays}</TableCell>
+                          <TableCell className="hidden md:table-cell max-w-xs truncate">{leave.reason}</TableCell>
+                          <TableCell>{getStatusBadge(leave.status)}</TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              {/* View Details Button - Shows if there are HR comments */}
+                              {(leave.status === "APPROVED" || leave.status === "REJECTED") && leave.hrComments && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => openDetailsDialog(leave)}
+                                  title="View HR comments"
+                                >
+                                  <Eye className="h-4 w-4" />
+                                  <span className="ml-1 hidden sm:inline">View</span>
+                                </Button>
+                              )}
+                              
+                              {/* Cancel Button */}
+                              {(leave.status === "PENDING" || leave.status === "APPROVED") &&
+                                new Date(leave.startDate) > new Date() && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleCancelLeave(leave.id)}
+                                    className="text-destructive hover:text-destructive"
+                                  >
+                                    <XCircle className="h-4 w-4" />
+                                    <span className="ml-1 hidden sm:inline">Cancel</span>
+                                  </Button>
+                                )}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Leave Details Dialog - Minimalist */}
+        {/* Leave Details Dialog */}
         <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
-          <DialogContent className="sm:max-w-106.25">
+          <DialogContent className="sm:max-w-lg">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5" />
+                {selectedLeave?.status === "APPROVED" && <CheckCircle2 className="h-5 w-5 text-green-600" />}
+                {selectedLeave?.status === "REJECTED" && <AlertCircle className="h-5 w-5 text-red-600" />}
                 Leave Details
               </DialogTitle>
             </DialogHeader>
             {selectedLeave && (
               <div className="space-y-4">
-                {/* Leave Info */}
-                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Status</span>
+                {/* Status Banner */}
+                <div className={`rounded-lg p-4 ${
+                  selectedLeave.status === "APPROVED" 
+                    ? "bg-green-50 border border-green-200" 
+                    : "bg-red-50 border border-red-200"
+                }`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium">Status</span>
                     {getStatusBadge(selectedLeave.status)}
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Leave Type</span>
-                    <span className="text-sm font-medium">{selectedLeave.leaveType}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Duration</span>
-                    <span className="text-sm font-medium">
-                      {new Date(selectedLeave.startDate).toLocaleDateString("en-IN")} - {new Date(selectedLeave.endDate).toLocaleDateString("en-IN")}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Total Days</span>
-                    <span className="text-sm font-medium">{selectedLeave.totalDays} days</span>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="text-muted-foreground block mb-1">Leave Type</span>
+                      <span className="font-medium flex items-center gap-1">
+                        {getLeaveTypeIcon(selectedLeave.leaveType)}
+                        {selectedLeave.leaveType}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground block mb-1">Duration</span>
+                      <span className="font-medium">{selectedLeave.totalDays} days</span>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="text-muted-foreground block mb-1">Period</span>
+                      <span className="font-medium">
+                        {new Date(selectedLeave.startDate).toLocaleDateString("en-IN")} - {new Date(selectedLeave.endDate).toLocaleDateString("en-IN")}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Your Reason */}
                 <div>
-                  <Label className="text-sm font-semibold">Your Reason</Label>
-                  <p className="text-sm text-muted-foreground mt-1 p-3 bg-gray-50 rounded-md border">
+                  <Label className="text-sm font-semibold mb-2 block">Your Reason</Label>
+                  <div className="text-sm text-muted-foreground p-3 bg-muted/50 rounded-lg border">
                     {selectedLeave.reason}
-                  </p>
+                  </div>
                 </div>
 
                 {/* HR Comments */}
                 {selectedLeave.hrComments && (
                   <div>
-                    <Label className="text-sm font-semibold flex items-center gap-2">
+                    <Label className="text-sm font-semibold mb-2 flex items-center gap-2">
                       <MessageSquare className="h-4 w-4" />
                       HR Comments
                     </Label>
-                    <p className="text-sm text-muted-foreground mt-1 p-3 bg-blue-50 rounded-md border border-blue-200">
+                    <div className={`text-sm p-3 rounded-lg border ${
+                      selectedLeave.status === "APPROVED"
+                        ? "bg-green-50 border-green-200 text-green-900"
+                        : "bg-red-50 border-red-200 text-red-900"
+                    }`}>
                       {selectedLeave.hrComments}
-                    </p>
+                    </div>
                   </div>
                 )}
 
                 {/* Reviewed By */}
                 {selectedLeave.approver && (
-                  <div className="text-xs text-muted-foreground">
-                    Reviewed by {selectedLeave.approver.name} on{" "}
-                    {selectedLeave.approvedAt && new Date(selectedLeave.approvedAt).toLocaleDateString("en-IN")}
-                    {selectedLeave.rejectedAt && new Date(selectedLeave.rejectedAt).toLocaleDateString("en-IN")}
+                  <div className="text-xs text-muted-foreground pt-2 border-t flex items-center gap-2">
+                    <div className="flex-1">
+                      Reviewed by <span className="font-medium">{selectedLeave.approver.name}</span> on{" "}
+                      {selectedLeave.approvedAt && new Date(selectedLeave.approvedAt).toLocaleDateString("en-IN")}
+                      {selectedLeave.rejectedAt && new Date(selectedLeave.rejectedAt).toLocaleDateString("en-IN")}
+                    </div>
                   </div>
                 )}
 

@@ -280,14 +280,14 @@ export default function AdminPayrollPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Payroll Management</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Payroll Management</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">
           Configure salary structure and view payroll for employees
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
@@ -332,12 +332,12 @@ export default function AdminPayrollPage() {
       {/* Employee List */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <CardTitle>Employee Salary Configuration</CardTitle>
-              <CardDescription>Click on an employee to configure their salary structure</CardDescription>
+              <CardTitle className="text-base sm:text-lg">Employee Salary Configuration</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">Click on an employee to configure their salary structure</CardDescription>
             </div>
-            <div className="relative w-72">
+            <div className="relative w-full sm:w-72">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search employees..."
@@ -350,38 +350,44 @@ export default function AdminPayrollPage() {
         </CardHeader>
         <CardContent>
           <div className="rounded-lg border">
+            <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="bg-slate-50">
                   <TableHead>Employee</TableHead>
-                  <TableHead>Employee ID</TableHead>
-                  <TableHead>Email</TableHead>
+                  <TableHead className="hidden sm:table-cell">Employee ID</TableHead>
+                  <TableHead className="hidden md:table-cell">Email</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredEmployees.map((employee) => (
                   <TableRow key={employee.id}>
-                    <TableCell className="font-medium">{employee.name}</TableCell>
-                    <TableCell>{employee.employeeId || "-"}</TableCell>
-                    <TableCell>{employee.email}</TableCell>
+                    <TableCell>
+                      <div className="min-w-0">
+                        <p className="font-medium truncate">{employee.name}</p>
+                        <p className="text-xs text-muted-foreground sm:hidden truncate">{employee.employeeId || employee.email}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">{employee.employeeId || "-"}</TableCell>
+                    <TableCell className="hidden md:table-cell">{employee.email}</TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
+                      <div className="flex flex-col sm:flex-row justify-end gap-1 sm:gap-2">
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => openConfigDialog(employee)}
                         >
-                          <Settings className="h-4 w-4 mr-1" />
-                          Configure
+                          <Settings className="h-4 w-4 sm:mr-1" />
+                          <span className="hidden sm:inline">Configure</span>
                         </Button>
                         <Button
                           variant="default"
                           size="sm"
                           onClick={() => viewPayroll(employee)}
                         >
-                          <Eye className="h-4 w-4 mr-1" />
-                          View Payroll
+                          <Eye className="h-4 w-4 sm:mr-1" />
+                          <span className="hidden sm:inline">View Payroll</span>
                         </Button>
                       </div>
                     </TableCell>
@@ -396,6 +402,7 @@ export default function AdminPayrollPage() {
                 )}
               </TableBody>
             </Table>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -417,7 +424,7 @@ export default function AdminPayrollPage() {
             </TabsList>
 
             <TabsContent value="salary-info" className="space-y-4 mt-4">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="monthlyWage">Monthly Wage (₹)</Label>
                   <Input
@@ -543,9 +550,9 @@ export default function AdminPayrollPage() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex items-center gap-4 mt-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 mt-4">
             <Select value={payrollMonth.toString()} onValueChange={(v) => setPayrollMonth(parseInt(v))}>
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-full sm:w-40">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -557,7 +564,7 @@ export default function AdminPayrollPage() {
               </SelectContent>
             </Select>
             <Select value={payrollYear.toString()} onValueChange={(v) => setPayrollYear(parseInt(v))}>
-              <SelectTrigger className="w-32">
+              <SelectTrigger className="w-full sm:w-32">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -581,7 +588,7 @@ export default function AdminPayrollPage() {
           ) : payrollData ? (
             <div className="space-y-6 mt-4">
               {/* Attendance Summary */}
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 <div className="p-3 rounded-lg bg-slate-50 text-center">
                   <p className="text-lg font-bold">{payrollData.attendance.totalWorkingDays}</p>
                   <p className="text-xs text-muted-foreground">Working Days</p>
