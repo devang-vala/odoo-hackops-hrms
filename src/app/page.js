@@ -14,12 +14,12 @@ export default function HomePage() {
       if (! user) {
         // Not logged in → Go to auth
         router.push("/auth");
-      } else if (user. role === "HR") {
+      } else if (user.role === "HR") {
         // HR user → Go to admin dashboard
         router.push("/admin");
       } else {
         // Employee → Go to employee dashboard
-        router. push("/employee");
+        router.push("/employee");
       }
     }
   }, [user, loading, router]);

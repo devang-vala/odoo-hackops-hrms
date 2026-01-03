@@ -11,7 +11,7 @@ export async function authenticate(request) {
         error: {
           success: false,
           error: "Unauthorized",
-          message: "No token provided.  Please include 'Authorization: Bearer <token>' header",
+          message: "No token provided. Please include 'Authorization: Bearer <token>' header",
         },
         status: 401,
       };

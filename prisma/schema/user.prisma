@@ -5,6 +5,15 @@ model User {
   password       String?           // null for Google OAuth users
   role           UserRole        @default(EMPLOYEE)
   googleId       String?         @unique
+
+  // Company & Employment Info
+  companyName    String?
+  companyLogo    String?         // Cloudinary URL
+  joiningYear    Int?
+  serialNumber   Int?
+
+  // Password Management
+  isFirstLogin   Boolean         @default(true)
   
   // Minimal HRMS fields
   employeeId     String?         @unique  // Employee ID for HRMS

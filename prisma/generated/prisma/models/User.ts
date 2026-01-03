@@ -27,12 +27,16 @@ export type AggregateUser = {
 }
 
 export type UserAvgAggregateOutputType = {
+  joiningYear: number | null
+  serialNumber: number | null
   paidLeaveBalance: number | null
   sickLeaveBalance: number | null
   casualLeaveBalance: number | null
 }
 
 export type UserSumAggregateOutputType = {
+  joiningYear: number | null
+  serialNumber: number | null
   paidLeaveBalance: number | null
   sickLeaveBalance: number | null
   casualLeaveBalance: number | null
@@ -45,6 +49,11 @@ export type UserMinAggregateOutputType = {
   password: string | null
   role: $Enums.UserRole | null
   googleId: string | null
+  companyName: string | null
+  companyLogo: string | null
+  joiningYear: number | null
+  serialNumber: number | null
+  isFirstLogin: boolean | null
   employeeId: string | null
   phone: string | null
   paidLeaveBalance: number | null
@@ -61,6 +70,11 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   role: $Enums.UserRole | null
   googleId: string | null
+  companyName: string | null
+  companyLogo: string | null
+  joiningYear: number | null
+  serialNumber: number | null
+  isFirstLogin: boolean | null
   employeeId: string | null
   phone: string | null
   paidLeaveBalance: number | null
@@ -77,6 +91,11 @@ export type UserCountAggregateOutputType = {
   password: number
   role: number
   googleId: number
+  companyName: number
+  companyLogo: number
+  joiningYear: number
+  serialNumber: number
+  isFirstLogin: number
   employeeId: number
   phone: number
   paidLeaveBalance: number
@@ -89,12 +108,16 @@ export type UserCountAggregateOutputType = {
 
 
 export type UserAvgAggregateInputType = {
+  joiningYear?: true
+  serialNumber?: true
   paidLeaveBalance?: true
   sickLeaveBalance?: true
   casualLeaveBalance?: true
 }
 
 export type UserSumAggregateInputType = {
+  joiningYear?: true
+  serialNumber?: true
   paidLeaveBalance?: true
   sickLeaveBalance?: true
   casualLeaveBalance?: true
@@ -107,6 +130,11 @@ export type UserMinAggregateInputType = {
   password?: true
   role?: true
   googleId?: true
+  companyName?: true
+  companyLogo?: true
+  joiningYear?: true
+  serialNumber?: true
+  isFirstLogin?: true
   employeeId?: true
   phone?: true
   paidLeaveBalance?: true
@@ -123,6 +151,11 @@ export type UserMaxAggregateInputType = {
   password?: true
   role?: true
   googleId?: true
+  companyName?: true
+  companyLogo?: true
+  joiningYear?: true
+  serialNumber?: true
+  isFirstLogin?: true
   employeeId?: true
   phone?: true
   paidLeaveBalance?: true
@@ -139,6 +172,11 @@ export type UserCountAggregateInputType = {
   password?: true
   role?: true
   googleId?: true
+  companyName?: true
+  companyLogo?: true
+  joiningYear?: true
+  serialNumber?: true
+  isFirstLogin?: true
   employeeId?: true
   phone?: true
   paidLeaveBalance?: true
@@ -242,6 +280,11 @@ export type UserGroupByOutputType = {
   password: string | null
   role: $Enums.UserRole
   googleId: string | null
+  companyName: string | null
+  companyLogo: string | null
+  joiningYear: number | null
+  serialNumber: number | null
+  isFirstLogin: boolean
   employeeId: string | null
   phone: string | null
   paidLeaveBalance: number
@@ -281,6 +324,11 @@ export type UserWhereInput = {
   password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
+  companyName?: Prisma.StringNullableFilter<"User"> | string | null
+  companyLogo?: Prisma.StringNullableFilter<"User"> | string | null
+  joiningYear?: Prisma.IntNullableFilter<"User"> | number | null
+  serialNumber?: Prisma.IntNullableFilter<"User"> | number | null
+  isFirstLogin?: Prisma.BoolFilter<"User"> | boolean
   employeeId?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   paidLeaveBalance?: Prisma.IntFilter<"User"> | number
@@ -304,6 +352,11 @@ export type UserOrderByWithRelationInput = {
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  companyLogo?: Prisma.SortOrderInput | Prisma.SortOrder
+  joiningYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  serialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  isFirstLogin?: Prisma.SortOrder
   employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   paidLeaveBalance?: Prisma.SortOrder
@@ -331,6 +384,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
+  companyName?: Prisma.StringNullableFilter<"User"> | string | null
+  companyLogo?: Prisma.StringNullableFilter<"User"> | string | null
+  joiningYear?: Prisma.IntNullableFilter<"User"> | number | null
+  serialNumber?: Prisma.IntNullableFilter<"User"> | number | null
+  isFirstLogin?: Prisma.BoolFilter<"User"> | boolean
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   paidLeaveBalance?: Prisma.IntFilter<"User"> | number
   sickLeaveBalance?: Prisma.IntFilter<"User"> | number
@@ -353,6 +411,11 @@ export type UserOrderByWithAggregationInput = {
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  companyLogo?: Prisma.SortOrderInput | Prisma.SortOrder
+  joiningYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  serialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  isFirstLogin?: Prisma.SortOrder
   employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   paidLeaveBalance?: Prisma.SortOrder
@@ -377,6 +440,11 @@ export type UserScalarWhereWithAggregatesInput = {
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  companyName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  companyLogo?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  joiningYear?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
+  serialNumber?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
+  isFirstLogin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   employeeId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   paidLeaveBalance?: Prisma.IntWithAggregatesFilter<"User"> | number
@@ -393,6 +461,11 @@ export type UserCreateInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -416,6 +489,11 @@ export type UserUncheckedCreateInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -439,6 +517,11 @@ export type UserUpdateInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -462,6 +545,11 @@ export type UserUncheckedUpdateInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -485,6 +573,11 @@ export type UserCreateManyInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -501,6 +594,11 @@ export type UserUpdateManyMutationInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -517,6 +615,11 @@ export type UserUncheckedUpdateManyInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -543,6 +646,11 @@ export type UserCountOrderByAggregateInput = {
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  companyLogo?: Prisma.SortOrder
+  joiningYear?: Prisma.SortOrder
+  serialNumber?: Prisma.SortOrder
+  isFirstLogin?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   paidLeaveBalance?: Prisma.SortOrder
@@ -553,6 +661,8 @@ export type UserCountOrderByAggregateInput = {
 }
 
 export type UserAvgOrderByAggregateInput = {
+  joiningYear?: Prisma.SortOrder
+  serialNumber?: Prisma.SortOrder
   paidLeaveBalance?: Prisma.SortOrder
   sickLeaveBalance?: Prisma.SortOrder
   casualLeaveBalance?: Prisma.SortOrder
@@ -565,6 +675,11 @@ export type UserMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  companyLogo?: Prisma.SortOrder
+  joiningYear?: Prisma.SortOrder
+  serialNumber?: Prisma.SortOrder
+  isFirstLogin?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   paidLeaveBalance?: Prisma.SortOrder
@@ -581,6 +696,11 @@ export type UserMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  companyLogo?: Prisma.SortOrder
+  joiningYear?: Prisma.SortOrder
+  serialNumber?: Prisma.SortOrder
+  isFirstLogin?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   paidLeaveBalance?: Prisma.SortOrder
@@ -591,6 +711,8 @@ export type UserMinOrderByAggregateInput = {
 }
 
 export type UserSumOrderByAggregateInput = {
+  joiningYear?: Prisma.SortOrder
+  serialNumber?: Prisma.SortOrder
   paidLeaveBalance?: Prisma.SortOrder
   sickLeaveBalance?: Prisma.SortOrder
   casualLeaveBalance?: Prisma.SortOrder
@@ -700,6 +822,14 @@ export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type UserCreateWithoutCalculatedSalariesInput = {
   id?: string
   name: string
@@ -707,6 +837,11 @@ export type UserCreateWithoutCalculatedSalariesInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -729,6 +864,11 @@ export type UserUncheckedCreateWithoutCalculatedSalariesInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -767,6 +907,11 @@ export type UserUpdateWithoutCalculatedSalariesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -789,6 +934,11 @@ export type UserUncheckedUpdateWithoutCalculatedSalariesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -811,6 +961,11 @@ export type UserCreateWithoutEmployeeSalaryComponentsInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -833,6 +988,11 @@ export type UserUncheckedCreateWithoutEmployeeSalaryComponentsInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -871,6 +1031,11 @@ export type UserUpdateWithoutEmployeeSalaryComponentsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -893,6 +1058,11 @@ export type UserUncheckedUpdateWithoutEmployeeSalaryComponentsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -915,6 +1085,11 @@ export type UserCreateWithoutSalaryInfoInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -937,6 +1112,11 @@ export type UserUncheckedCreateWithoutSalaryInfoInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -975,6 +1155,11 @@ export type UserUpdateWithoutSalaryInfoInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -997,6 +1182,11 @@ export type UserUncheckedUpdateWithoutSalaryInfoInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1019,6 +1209,11 @@ export type UserCreateWithoutAttendancesInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -1041,6 +1236,11 @@ export type UserUncheckedCreateWithoutAttendancesInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -1079,6 +1279,11 @@ export type UserUpdateWithoutAttendancesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1101,6 +1306,11 @@ export type UserUncheckedUpdateWithoutAttendancesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1123,6 +1333,11 @@ export type UserCreateWithoutLeavesInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -1145,6 +1360,11 @@ export type UserUncheckedCreateWithoutLeavesInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -1172,6 +1392,11 @@ export type UserCreateWithoutApprovedLeavesInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -1194,6 +1419,11 @@ export type UserUncheckedCreateWithoutApprovedLeavesInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -1232,6 +1462,11 @@ export type UserUpdateWithoutLeavesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1254,6 +1489,11 @@ export type UserUncheckedUpdateWithoutLeavesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1287,6 +1527,11 @@ export type UserUpdateWithoutApprovedLeavesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1309,6 +1554,11 @@ export type UserUncheckedUpdateWithoutApprovedLeavesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1331,6 +1581,11 @@ export type UserCreateWithoutPasswordResetsInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -1353,6 +1608,11 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   password?: string | null
   role?: $Enums.UserRole
   googleId?: string | null
+  companyName?: string | null
+  companyLogo?: string | null
+  joiningYear?: number | null
+  serialNumber?: number | null
+  isFirstLogin?: boolean
   employeeId?: string | null
   phone?: string | null
   paidLeaveBalance?: number
@@ -1391,6 +1651,11 @@ export type UserUpdateWithoutPasswordResetsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1413,6 +1678,11 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serialNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFirstLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1511,6 +1781,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   password?: boolean
   role?: boolean
   googleId?: boolean
+  companyName?: boolean
+  companyLogo?: boolean
+  joiningYear?: boolean
+  serialNumber?: boolean
+  isFirstLogin?: boolean
   employeeId?: boolean
   phone?: boolean
   paidLeaveBalance?: boolean
@@ -1535,6 +1810,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   role?: boolean
   googleId?: boolean
+  companyName?: boolean
+  companyLogo?: boolean
+  joiningYear?: boolean
+  serialNumber?: boolean
+  isFirstLogin?: boolean
   employeeId?: boolean
   phone?: boolean
   paidLeaveBalance?: boolean
@@ -1551,6 +1831,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   role?: boolean
   googleId?: boolean
+  companyName?: boolean
+  companyLogo?: boolean
+  joiningYear?: boolean
+  serialNumber?: boolean
+  isFirstLogin?: boolean
   employeeId?: boolean
   phone?: boolean
   paidLeaveBalance?: boolean
@@ -1567,6 +1852,11 @@ export type UserSelectScalar = {
   password?: boolean
   role?: boolean
   googleId?: boolean
+  companyName?: boolean
+  companyLogo?: boolean
+  joiningYear?: boolean
+  serialNumber?: boolean
+  isFirstLogin?: boolean
   employeeId?: boolean
   phone?: boolean
   paidLeaveBalance?: boolean
@@ -1576,7 +1866,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "googleId" | "employeeId" | "phone" | "paidLeaveBalance" | "sickLeaveBalance" | "casualLeaveBalance" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "googleId" | "companyName" | "companyLogo" | "joiningYear" | "serialNumber" | "isFirstLogin" | "employeeId" | "phone" | "paidLeaveBalance" | "sickLeaveBalance" | "casualLeaveBalance" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   passwordResets?: boolean | Prisma.User$passwordResetsArgs<ExtArgs>
   attendances?: boolean | Prisma.User$attendancesArgs<ExtArgs>
@@ -1608,6 +1898,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     password: string | null
     role: $Enums.UserRole
     googleId: string | null
+    companyName: string | null
+    companyLogo: string | null
+    joiningYear: number | null
+    serialNumber: number | null
+    isFirstLogin: boolean
     employeeId: string | null
     phone: string | null
     paidLeaveBalance: number
@@ -2051,6 +2346,11 @@ export interface UserFieldRefs {
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly googleId: Prisma.FieldRef<"User", 'String'>
+  readonly companyName: Prisma.FieldRef<"User", 'String'>
+  readonly companyLogo: Prisma.FieldRef<"User", 'String'>
+  readonly joiningYear: Prisma.FieldRef<"User", 'Int'>
+  readonly serialNumber: Prisma.FieldRef<"User", 'Int'>
+  readonly isFirstLogin: Prisma.FieldRef<"User", 'Boolean'>
   readonly employeeId: Prisma.FieldRef<"User", 'String'>
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly paidLeaveBalance: Prisma.FieldRef<"User", 'Int'>

@@ -64,7 +64,7 @@ export default function EmployeeLayout({ children }) {
     if (! loading && !user) {
       router.push("/auth");
     }
-    if (user?. role === "HR") {
+    if (user?.role === "HR") {
       router.push("/admin");
     }
   }, [user, loading, router]);
@@ -126,7 +126,7 @@ export default function EmployeeLayout({ children }) {
                 <nav className="px-3 space-y-1">
                   {sidebarItems.map((item) => {
                     const isActive = pathname === item.href;
-                    const Icon = item. icon;
+                    const Icon = item.icon;
 
                     if (collapsed) {
                       return (

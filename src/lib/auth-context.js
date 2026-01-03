@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import axios from "@/lib/axios";
+import api from "@/lib/axios";
 
 const AuthContext = createContext({});
 
@@ -20,9 +20,7 @@ export function AuthProvider({ children }) {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        const response = await axios.get("/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.get("/api/auth/me");
         setUser(response.data.user);
       }
     } catch (error) {
@@ -35,22 +33,24 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const response = await axios.post("/api/auth/login", { email, password });
+    const response = await api.post("/api/auth/login", { email, password });
     localStorage.setItem("token", response.data.token);
     setUser(response.data.user);
     
-    // Redirect based on role
-    if (response.data.user.role === "HR") {
-      router.push("/admin"); // Keep /admin for now, rename later
-    } else {
-      router.push("/");
+    // ✅ Don't redirect if first login - let component handle it
+    if (! response.data.user.isFirstLogin) {
+      if (response.data.user.role === "HR") {
+        router.push("/admin");
+      } else {
+        router.push("/employee");
+      }
     }
     
     return response.data;
   };
 
   const register = async (name, email, password, employeeId = null) => {
-    const response = await axios.post("/api/auth/register", {
+    const response = await api.post("/api/auth/register", {
       name,
       email,
       password,
@@ -67,7 +67,17 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    router.push("/");
+    router.push("/auth");
+  };
+
+  // ✅ Add method to update user after password change
+  const refreshUser = async () => {
+    try {
+      const response = await api.get("/api/auth/me");
+      setUser(response.data.user);
+    } catch (error) {
+      console.error("Failed to refresh user:", error);
+    }
   };
 
   return (
@@ -79,6 +89,7 @@ export function AuthProvider({ children }) {
         loginWithGoogle, 
         logout, 
         loading,
+        refreshUser, // ✅ Export this
       }}
     >
       {children}

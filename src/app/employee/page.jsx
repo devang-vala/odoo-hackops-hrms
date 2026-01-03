@@ -52,12 +52,12 @@ export default function EmployeeDashboard() {
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2, "0");
       const statsRes = await api.get(`/api/attendance/my-attendance? month=${year}-${month}`);
-      setAttendanceStats(statsRes. data.stats);
+      setAttendanceStats(statsRes.data.stats);
 
       // Fetch leave balance and recent leaves
       const leavesRes = await api.get("/api/leave/my-leaves");
       setLeaveBalance(leavesRes.data.balance);
-      setRecentLeaves(leavesRes.data.leaves. slice(0, 3));
+      setRecentLeaves(leavesRes.data.leaves.slice(0, 3));
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error);
     } finally {
@@ -131,7 +131,7 @@ export default function EmployeeDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Welcome back, {user?. name?. split(" ")[0]}!
+            Welcome back, {user?.name?.split(" ")[0]}!
           </h1>
           <p className="text-muted-foreground">Here's what's happening with your work today</p>
         </div>
@@ -227,7 +227,7 @@ export default function EmployeeDashboard() {
                     <Briefcase className="h-5 w-5 text-blue-500" />
                     <span className="font-medium">Paid Leave</span>
                   </div>
-                  <span className="text-lg font-semibold">{leaveBalance?. paidLeaveBalance} days</span>
+                  <span className="text-lg font-semibold">{leaveBalance?.paidLeaveBalance} days</span>
                 </div>
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-2">
@@ -242,7 +242,7 @@ export default function EmployeeDashboard() {
                     <span className="font-medium">Casual Leave</span>
                   </div>
                   <span className="text-lg font-semibold">
-                    {leaveBalance?. casualLeaveBalance} days
+                    {leaveBalance?.casualLeaveBalance} days
                   </span>
                 </div>
               </div>
@@ -322,7 +322,7 @@ export default function EmployeeDashboard() {
                       </p>
                     </div>
                   </div>
-                  {getStatusBadge(leave. status)}
+                  {getStatusBadge(leave.status)}
                 </div>
               ))}
             </div>

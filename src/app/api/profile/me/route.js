@@ -79,7 +79,7 @@ export async function PATCH(request) {
     }
 
     // Phone validation (optional field)
-    if (phone && !/^\+? [0-9]{10,15}$/.test(phone. replace(/\s/g, ""))) {
+    if (phone && !/^\+? [0-9]{10,15}$/.test(phone.replace(/\s/g, ""))) {
       return NextResponse.json(
         {
           success:  false,
@@ -112,7 +112,7 @@ export async function PATCH(request) {
       },
     });
 
-    return NextResponse. json(
+    return NextResponse.json(
       {
         success: true,
         message: "Profile updated successfully",

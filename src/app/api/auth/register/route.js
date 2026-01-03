@@ -1,117 +1,103 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-
-// Helper function to determine if user should be HR
-function isHREmail(email) {
-  const normalizedEmail = email.toLowerCase();
-  return normalizedEmail.endsWith(".hackops.admin@gmail.com");
-}
+import bcrypt from "bcryptjs";
 
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { email, name, password, employeeId } = body;
+    const { name, email, password, phone, companyName, companyLogo, role } = body;
 
-    if (!email || !name || !password) {
+    // Validation
+    if (!name || !email || !password) {
       return NextResponse.json(
-        { 
+        {
           success: false,
-          error: "Missing required fields",
-          message:  "Email, name, and password are required" 
+          error: "Missing fields",
+          message: "Name, email, and password are required",
         },
-        { status: 400 }
+        { status:  400 }
       );
     }
 
-    // Employee ID validation (if provided)
-    if (employeeId) {
-      const existingEmployee = await prisma.user.findUnique({
-        where: { employeeId },
-      });
-
-      if (existingEmployee) {
-        return NextResponse.json(
-          { 
-            success:  false,
-            error: "Employee ID already exists",
-            message: "This employee ID is already registered" 
-          },
-          { status: 409 }
-        );
-      }
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    // For HR registration, company name is required
+    if (role === "HR" && !companyName) {
       return NextResponse.json(
-        { 
+        {
           success: false,
-          error: "Invalid email format",
-          message: "Please provide a valid email address" 
+          error: "Missing company name",
+          message: "Company name is required for HR registration",
         },
-        { status: 400 }
+        { status:  400 }
       );
     }
 
-    if (password.length < 6) {
+    // Password strength validation
+    if (password.length < 8) {
       return NextResponse.json(
-        { 
+        {
           success: false,
           error: "Weak password",
-          message: "Password must be at least 6 characters long" 
+          message: "Password must be at least 8 characters",
         },
         { status: 400 }
       );
     }
 
+    // Check if email already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email:  email.toLowerCase() },
+      where: { email:  email.toLowerCase().trim() },
     });
 
     if (existingUser) {
       return NextResponse.json(
-        { 
+        {
           success: false,
-          error: "User already exists",
-          message: "A user with this email already exists" 
+          error: "Email exists",
+          message: "User with this email already exists",
         },
-        { status:  409 }
+        { status: 400 }
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Determine role based on email
-    const userRole = isHREmail(email) ? "HR" : "EMPLOYEE";
-
+    // Create user
     const user = await prisma.user.create({
       data: {
-        email: email.toLowerCase(),
         name:  name.trim(),
+        email: email.toLowerCase().trim(),
         password: hashedPassword,
-        role: userRole,
-        employeeId: employeeId || null,
+        role: role || "EMPLOYEE",
+        phone: phone?.trim() || null,
+        companyName: companyName?.trim() || null,
+        companyLogo: companyLogo || null,
+        isFirstLogin: false, // Self-registered users don't need password change
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role:  true,
+        companyName: true,
       },
     });
-
-    const { password: _, ...userWithoutPassword } = user;
 
     return NextResponse.json(
       {
         success: true,
-        message: `User created successfully as ${userRole}`,
-        user: userWithoutPassword,
+        message: "Account created successfully",
+        user,
       },
-      { status: 201 }
+      { status:  201 }
     );
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error("Register error:", error);
     return NextResponse.json(
-      { 
+      {
         success: false,
         error: "Internal server error",
-        message: "Something went wrong during registration" 
+        message: "Failed to create account",
       },
       { status: 500 }
     );
