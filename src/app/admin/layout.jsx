@@ -22,6 +22,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Building2,
+  Wallet,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +46,11 @@ const sidebarItems = [
     title: "Time Off",
     href: "/admin/time-off",
     icon: Calendar,
+  },
+  {
+    title: "Payroll",
+    href: "/admin/payroll",
+    icon: Wallet,
   },
 ];
 

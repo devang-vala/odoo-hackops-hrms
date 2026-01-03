@@ -1,105 +1,355 @@
-"use client"
+"use client";
 
-import { DashboardHeader } from "@/components/user/dashboard-header"
-import { DashboardSidebar } from "@/components/user/dashboard-sidebar"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Clock, Calendar, TrendingUp, CheckCircle, XCircle } from "lucide-react"
-import { AttendanceCalendar } from "@/components/user/attendance-calendar"
-import { AttendanceTable } from "@/components/user/attendance-table"
+import { useEffect, useState } from "react";
+import api from "@/lib/axios";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Wallet,
+  TrendingUp,
+  TrendingDown,
+  Calendar,
+  DollarSign,
+  FileText,
+  Loader2,
+  Info,
+} from "lucide-react";
 
-export default function AttendancePage() {
-  const currentTime = new Date().toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  })
+export default function PayrollPage() {
+  const [loading, setLoading] = useState(true);
+  const [payroll, setPayroll] = useState(null);
+  const [error, setError] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    fetchPayroll();
+  }, [selectedMonth, selectedYear]);
+
+  const fetchPayroll = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await api.get(`/api/payroll/my-payroll?month=${selectedMonth}&year=${selectedYear}`);
+      if (response.data.success) {
+        setPayroll(response.data.payroll);
+      } else {
+        setError(response.data.error);
+        setPayroll(null);
+      }
+    } catch (err) {
+      console.error("Failed to fetch payroll:", err);
+      setError(err.response?.data?.error || "Failed to fetch payroll");
+      setPayroll(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(amount || 0);
+  };
+
+  const getMonthName = (month) => {
+    return new Date(2000, month - 1).toLocaleString("default", { month: "long" });
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-5xl mx-auto p-6">
+        <div className="flex items-center justify-center h-96">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-5xl mx-auto p-6">
+        <Card>
+          <CardContent className="pt-12 pb-12">
+            <div className="text-center text-muted-foreground">
+              <FileText className="h-16 w-16 mx-auto mb-4 opacity-20" />
+              <h3 className="text-lg font-medium mb-2">Payroll Not Available</h3>
+              <p>{error}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <DashboardSidebar />
-      <div className="flex-1 flex flex-col">
-        <DashboardHeader />
-        <main className="flex-1 p-6 space-y-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-semibold tracking-tight text-balance">Attendance Tracking</h1>
-            <Badge variant="outline" className="text-lg px-4 py-2">
-              <Clock className="w-4 h-4 mr-2" />
-              {currentTime}
-            </Badge>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Check In/Out</CardTitle>
-                <CardDescription>Mark your attendance for today</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-4 border rounded-lg">
-                  <div>
-                    <p className="text-sm font-medium">Today's Status</p>
-                    <p className="text-2xl font-semibold text-primary mt-1">Checked In</p>
-                    <p className="text-sm text-muted-foreground mt-1">at 9:15 AM</p>
-                  </div>
-                  <CheckCircle className="w-12 h-12 text-primary" />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <Button size="lg" disabled>
-                    Check In
-                  </Button>
-                  <Button size="lg" variant="outline">
-                    Check Out
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>This Month Summary</CardTitle>
-                <CardDescription>December 2024</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <CheckCircle className="w-4 h-4 text-primary" />
-                      <p className="text-sm font-medium">Present Days</p>
-                    </div>
-                    <p className="text-3xl font-semibold">18</p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <XCircle className="w-4 h-4 text-destructive" />
-                      <p className="text-sm font-medium">Absent Days</p>
-                    </div>
-                    <p className="text-3xl font-semibold">2</p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Calendar className="w-4 h-4 text-chart-3" />
-                      <p className="text-sm font-medium">Leave Days</p>
-                    </div>
-                    <p className="text-3xl font-semibold">3</p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <TrendingUp className="w-4 h-4 text-chart-4" />
-                      <p className="text-sm font-medium">Attendance Rate</p>
-                    </div>
-                    <p className="text-3xl font-semibold">90%</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <AttendanceCalendar />
-
-          <AttendanceTable />
-        </main>
+    <div className="max-w-5xl mx-auto space-y-6 p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">My Payroll</h1>
+          <p className="text-muted-foreground">
+            View your salary details and breakdown
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Select value={selectedMonth.toString()} onValueChange={(v) => setSelectedMonth(parseInt(v))}>
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="Select month" />
+            </SelectTrigger>
+            <SelectContent>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((m) => (
+                <SelectItem key={m} value={m.toString()}>
+                  {getMonthName(m)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={selectedYear.toString()} onValueChange={(v) => setSelectedYear(parseInt(v))}>
+            <SelectTrigger className="w-28">
+              <SelectValue placeholder="Year" />
+            </SelectTrigger>
+            <SelectContent>
+              {[2024, 2025, 2026].map((y) => (
+                <SelectItem key={y} value={y.toString()}>
+                  {y}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
+
+      {payroll && (
+        <>
+          {/* Summary Cards */}
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card className="border-green-200 bg-green-50/50">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-green-100">
+                    <TrendingUp className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-green-700">Gross Earnings</p>
+                    <p className="text-2xl font-bold text-green-800">
+                      {formatCurrency(payroll.summary.grossEarnings)}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-red-200 bg-red-50/50">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-red-100">
+                    <TrendingDown className="h-6 w-6 text-red-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-red-700">Total Deductions</p>
+                    <p className="text-2xl font-bold text-red-800">
+                      {formatCurrency(payroll.summary.totalDeductions)}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-blue-200 bg-blue-50/50">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-blue-100">
+                    <Wallet className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-blue-700">Net Pay</p>
+                    <p className="text-2xl font-bold text-blue-800">
+                      {formatCurrency(payroll.summary.netSalary)}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Attendance Impact */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5" />
+                Attendance Summary
+              </CardTitle>
+              <CardDescription>
+                Your attendance impact on this month's salary
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div className="p-4 rounded-lg bg-slate-50 text-center">
+                  <p className="text-2xl font-bold">{payroll.attendance.totalWorkingDays}</p>
+                  <p className="text-sm text-muted-foreground">Working Days</p>
+                </div>
+                <div className="p-4 rounded-lg bg-green-50 text-center">
+                  <p className="text-2xl font-bold text-green-600">{payroll.attendance.daysPresent}</p>
+                  <p className="text-sm text-muted-foreground">Days Present</p>
+                </div>
+                <div className="p-4 rounded-lg bg-blue-50 text-center">
+                  <p className="text-2xl font-bold text-blue-600">{payroll.attendance.paidLeaveDays}</p>
+                  <p className="text-sm text-muted-foreground">Paid Leave</p>
+                </div>
+                <div className="p-4 rounded-lg bg-red-50 text-center">
+                  <p className="text-2xl font-bold text-red-600">{payroll.attendance.unpaidLeaveDays}</p>
+                  <p className="text-sm text-muted-foreground">Unpaid Leave</p>
+                </div>
+                <div className="p-4 rounded-lg bg-purple-50 text-center">
+                  <p className="text-2xl font-bold text-purple-600">{payroll.attendance.payableDays}</p>
+                  <p className="text-sm text-muted-foreground">Payable Days</p>
+                </div>
+              </div>
+              {payroll.attendance.unpaidLeaveDays > 0 && (
+                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-2">
+                  <Info className="h-5 w-5 text-yellow-600 mt-0.5" />
+                  <p className="text-sm text-yellow-800">
+                    Your salary has been reduced proportionally for {payroll.attendance.unpaidLeaveDays} unpaid leave day(s).
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Salary Breakdown */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Earnings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-green-700">
+                  <TrendingUp className="h-5 w-5" />
+                  Earnings
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-lg border overflow-hidden">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-green-50">
+                        <TableHead>Component</TableHead>
+                        <TableHead className="text-right">Amount</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {payroll.earnings?.map((item, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">{item.name}</TableCell>
+                          <TableCell className="text-right">
+                            {formatCurrency(item.amount)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow className="bg-green-50 font-bold">
+                        <TableCell>Total Earnings</TableCell>
+                        <TableCell className="text-right text-green-700">
+                          {formatCurrency(payroll.summary.grossEarnings)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Deductions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-red-700">
+                  <TrendingDown className="h-5 w-5" />
+                  Deductions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-lg border overflow-hidden">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-red-50">
+                        <TableHead>Component</TableHead>
+                        <TableHead className="text-right">Amount</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {payroll.deductions?.length > 0 ? (
+                        payroll.deductions.map((item, index) => (
+                          <TableRow key={index}>
+                            <TableCell className="font-medium">{item.name}</TableCell>
+                            <TableCell className="text-right">
+                              {formatCurrency(item.amount)}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={2} className="text-center text-muted-foreground py-4">
+                            No deductions
+                          </TableCell>
+                        </TableRow>
+                      )}
+                      <TableRow className="bg-red-50 font-bold">
+                        <TableCell>Total Deductions</TableCell>
+                        <TableCell className="text-right text-red-700">
+                          {formatCurrency(payroll.summary.totalDeductions)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Net Pay Summary */}
+          <Card className="border-2 border-blue-200">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="p-4 rounded-full bg-blue-100">
+                    <DollarSign className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-lg text-muted-foreground">
+                      Net Salary for {getMonthName(selectedMonth)} {selectedYear}
+                    </p>
+                    <p className="text-4xl font-bold text-blue-700">
+                      {formatCurrency(payroll.summary.netSalary)}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Based on {payroll.attendance.attendancePercentage}% attendance
+                    </p>
+                  </div>
+                </div>
+                <Badge className="bg-green-100 text-green-700 px-4 py-2">
+                  Calculated
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
-  )
+  );
 }
