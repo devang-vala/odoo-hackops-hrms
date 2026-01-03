@@ -25,6 +25,7 @@ import {
   CalendarDays,
   Menu,
   X,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,11 @@ const sidebarItems = [
     title: "Dashboard",
     href: "/employee",
     icon: LayoutDashboard,
+  },
+  {
+    title: "All Employees",
+    href: "/employee/employees",
+    icon: Users,
   },
   {
     title: "My Attendance",
