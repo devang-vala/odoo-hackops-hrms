@@ -39,6 +39,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   MoreHorizontal,
   Search,
@@ -49,12 +50,17 @@ import {
   UserCheck,
   Users,
   Filter,
+  Calendar,
+  Clock,
+  Briefcase,
+  Loader2,
 } from "lucide-react";
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
@@ -134,9 +140,22 @@ export default function EmployeesPage() {
     }
   };
 
-  const viewEmployee = (employee) => {
-    setSelectedEmployee(employee);
+  const viewEmployee = async (employee) => {
     setViewDialogOpen(true);
+    setProfileLoading(true);
+    setSelectedEmployee(employee); // Set basic info first
+    
+    try {
+      const response = await api.get(`/api/users/${employee.id}/profile`);
+      if (response.data.success) {
+        setSelectedEmployee(response.data.employee);
+      }
+    } catch (error) {
+      console.error("Failed to fetch employee profile:", error);
+      // Keep basic employee info if detailed fetch fails
+    } finally {
+      setProfileLoading(false);
+    }
   };
 
   const getRoleBadge = (role) => {
@@ -376,81 +395,268 @@ export default function EmployeesPage() {
 
       {/* View Employee Dialog */}
       <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[650px] max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Employee Profile</DialogTitle>
-            <DialogDescription>View employee details</DialogDescription>
+            <DialogDescription>View complete employee details</DialogDescription>
           </DialogHeader>
-          {selectedEmployee && (
-            <div className="space-y-6">
-              {/* Profile Header */}
+          
+          {profileLoading ? (
+            <div className="space-y-6 py-4">
               <div className="flex items-center gap-4">
-                <Avatar className="h-16 w-16">
-                  <AvatarFallback className="bg-primary text-white text-xl">
-                    {selectedEmployee.name?.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="text-lg font-semibold">{selectedEmployee.name}</h3>
-                  <p className="text-muted-foreground">{selectedEmployee.email}</p>
-                  {getRoleBadge(selectedEmployee.role)}
+                <Skeleton className="h-16 w-16 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-40" />
+                  <Skeleton className="h-4 w-56" />
                 </div>
               </div>
-
-              {/* Details */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Employee ID</p>
-                  <p className="font-medium font-mono">
-                    {selectedEmployee.employeeId || "Not assigned"}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Phone</p>
-                  <p className="font-medium">
-                    {selectedEmployee.phone || "Not provided"}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Joined On</p>
-                  <p className="font-medium">
-                    {new Date(selectedEmployee.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Last Updated</p>
-                  <p className="font-medium">
-                    {new Date(selectedEmployee.updatedAt).toLocaleDateString()}
-                  </p>
-                </div>
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="space-y-2">
+                    <Skeleton className="h-3 w-20" />
+                    <Skeleton className="h-5 w-32" />
+                  </div>
+                ))}
               </div>
-
-              {/* Leave Balances */}
-              <div className="space-y-3">
-                <h4 className="font-medium">Leave Balances</h4>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="p-3 rounded-lg bg-blue-50 text-center">
-                    <p className="text-2xl font-bold text-blue-600">
-                      {selectedEmployee.paidLeaveBalance}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Paid</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-red-50 text-center">
-                    <p className="text-2xl font-bold text-red-600">
-                      {selectedEmployee.sickLeaveBalance}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Sick</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-orange-50 text-center">
-                    <p className="text-2xl font-bold text-orange-600">
-                      {selectedEmployee.casualLeaveBalance}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Casual</p>
-                  </div>
-                </div>
-              </div>
+              <Skeleton className="h-24 w-full" />
             </div>
-          )}
+          ) : selectedEmployee ? (
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="details">Details</TabsTrigger>
+                <TabsTrigger value="attendance">Attendance</TabsTrigger>
+                <TabsTrigger value="leaves">Leaves</TabsTrigger>
+              </TabsList>
+
+              {/* Details Tab */}
+              <TabsContent value="details" className="space-y-6 mt-4">
+                {/* Profile Header */}
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-16 w-16">
+                    <AvatarFallback className="bg-primary text-white text-xl">
+                      {selectedEmployee.name?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className="text-lg font-semibold">{selectedEmployee.name}</h3>
+                    <p className="text-muted-foreground">{selectedEmployee.email}</p>
+                    <div className="mt-1">{getRoleBadge(selectedEmployee.role)}</div>
+                  </div>
+                </div>
+
+                {/* Basic Details */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Employee ID</p>
+                    <p className="font-medium font-mono">
+                      {selectedEmployee.employeeId || "Not assigned"}
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Phone</p>
+                    <p className="font-medium">
+                      {selectedEmployee.phone || "Not provided"}
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Joined On</p>
+                    <p className="font-medium">
+                      {new Date(selectedEmployee.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Last Updated</p>
+                    <p className="font-medium">
+                      {new Date(selectedEmployee.updatedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Stats */}
+                {selectedEmployee.stats && (
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="p-3 rounded-lg bg-green-50 border border-green-100">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-green-600" />
+                        <p className="text-sm text-muted-foreground">This Month Attendance</p>
+                      </div>
+                      <p className="text-xl font-bold text-green-600 mt-1">
+                        {selectedEmployee.stats.currentMonthAttendance} days
+                      </p>
+                    </div>
+                    <div className="p-3 rounded-lg bg-purple-50 border border-purple-100">
+                      <div className="flex items-center gap-2">
+                        <Briefcase className="h-4 w-4 text-purple-600" />
+                        <p className="text-sm text-muted-foreground">Total Leaves Taken</p>
+                      </div>
+                      <p className="text-xl font-bold text-purple-600 mt-1">
+                        {selectedEmployee.stats.totalLeavesTaken}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Leave Balances */}
+                <div className="space-y-3">
+                  <h4 className="font-medium">Leave Balances</h4>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="p-3 rounded-lg bg-blue-50 text-center border border-blue-100">
+                      <p className="text-2xl font-bold text-blue-600">
+                        {selectedEmployee.paidLeaveBalance ?? 0}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Paid Leave</p>
+                    </div>
+                    <div className="p-3 rounded-lg bg-red-50 text-center border border-red-100">
+                      <p className="text-2xl font-bold text-red-600">
+                        {selectedEmployee.sickLeaveBalance ?? 0}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Sick Leave</p>
+                    </div>
+                    <div className="p-3 rounded-lg bg-orange-50 text-center border border-orange-100">
+                      <p className="text-2xl font-bold text-orange-600">
+                        {selectedEmployee.casualLeaveBalance ?? 0}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Casual Leave</p>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Attendance Tab */}
+              <TabsContent value="attendance" className="mt-4">
+                <div className="space-y-4">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    Recent Attendance
+                  </h4>
+                  {selectedEmployee.attendances && selectedEmployee.attendances.length > 0 ? (
+                    <div className="rounded-lg border overflow-hidden">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-slate-50">
+                            <TableHead>Date</TableHead>
+                            <TableHead>Check In</TableHead>
+                            <TableHead>Check Out</TableHead>
+                            <TableHead>Hours</TableHead>
+                            <TableHead>Status</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {selectedEmployee.attendances.map((att) => (
+                            <TableRow key={att.id}>
+                              <TableCell className="font-medium">
+                                {new Date(att.date).toLocaleDateString()}
+                              </TableCell>
+                              <TableCell>
+                                {att.checkIn
+                                  ? new Date(att.checkIn).toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })
+                                  : "—"}
+                              </TableCell>
+                              <TableCell>
+                                {att.checkOut
+                                  ? new Date(att.checkOut).toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })
+                                  : "—"}
+                              </TableCell>
+                              <TableCell>
+                                {att.workHours ? `${att.workHours.toFixed(1)}h` : "—"}
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant={att.status === "PRESENT" ? "default" : "secondary"}
+                                  className={
+                                    att.status === "PRESENT"
+                                      ? "bg-green-100 text-green-700"
+                                      : att.status === "ABSENT"
+                                      ? "bg-red-100 text-red-700"
+                                      : "bg-yellow-100 text-yellow-700"
+                                  }
+                                >
+                                  {att.status}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground border rounded-lg">
+                      <Clock className="h-10 w-10 mx-auto mb-2 opacity-20" />
+                      <p>No attendance records found</p>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+
+              {/* Leaves Tab */}
+              <TabsContent value="leaves" className="mt-4">
+                <div className="space-y-4">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    Leave Requests
+                  </h4>
+                  {selectedEmployee.leaves && selectedEmployee.leaves.length > 0 ? (
+                    <div className="rounded-lg border overflow-hidden">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-slate-50">
+                            <TableHead>Type</TableHead>
+                            <TableHead>From</TableHead>
+                            <TableHead>To</TableHead>
+                            <TableHead>Days</TableHead>
+                            <TableHead>Status</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {selectedEmployee.leaves.map((leave) => (
+                            <TableRow key={leave.id}>
+                              <TableCell className="font-medium">
+                                {leave.leaveType}
+                              </TableCell>
+                              <TableCell>
+                                {new Date(leave.startDate).toLocaleDateString()}
+                              </TableCell>
+                              <TableCell>
+                                {new Date(leave.endDate).toLocaleDateString()}
+                              </TableCell>
+                              <TableCell>{leave.totalDays}</TableCell>
+                              <TableCell>
+                                <Badge
+                                  className={
+                                    leave.status === "APPROVED"
+                                      ? "bg-green-100 text-green-700"
+                                      : leave.status === "REJECTED"
+                                      ? "bg-red-100 text-red-700"
+                                      : leave.status === "PENDING"
+                                      ? "bg-yellow-100 text-yellow-700"
+                                      : "bg-gray-100 text-gray-700"
+                                  }
+                                >
+                                  {leave.status}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground border rounded-lg">
+                      <Calendar className="h-10 w-10 mx-auto mb-2 opacity-20" />
+                      <p>No leave requests found</p>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+            </Tabs>
+          ) : null}
+          
           <DialogFooter>
             <Button variant="outline" onClick={() => setViewDialogOpen(false)}>
               Close
