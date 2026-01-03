@@ -141,7 +141,7 @@ export async function sendEmployeeCredentials(employeeData) {
         </div>
 
         <center>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/auth" class="button">
+          <a href="${process.env.NEXT_PUBLIC_APP_URL}/auth" class="button">
             Login to HRMS
           </a>
         </center>

@@ -17,7 +17,7 @@ export async function GET(request) {
     const error = searchParams.get("error");
 
     // Get app URL with fallback
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
     const redirectUri = `${appUrl}/api/auth/callback/google`;
 
     // Handle OAuth errors
@@ -118,7 +118,7 @@ export async function GET(request) {
     console.error("Google OAuth callback error:", error);
     console.error("Error details:", error.response?.data || error.message);
     
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
     return NextResponse.redirect(`${appUrl}/auth?error=oauth_failed`);
   }
 }

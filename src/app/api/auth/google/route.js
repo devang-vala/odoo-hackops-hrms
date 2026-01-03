@@ -5,7 +5,7 @@ export async function GET(request) {
   const redirectTo = searchParams.get("redirect") || "/";
 
   // Get the app URL with fallback
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   const redirectUri = `${appUrl}/api/auth/callback/google`;
 
   // Validate required env vars
