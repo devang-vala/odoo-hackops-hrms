@@ -1,0 +1,18 @@
+model User {
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  password       String?           // null for Google OAuth users
+  role           UserRole        @default(EMPLOYEE)
+  googleId       String?         @unique
+  
+  // Minimal HRMS fields
+  employeeId     String?         @unique  // Employee ID for HRMS
+  phone          String?
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  
+  // Relations
+  passwordResets PasswordReset[]
+}
