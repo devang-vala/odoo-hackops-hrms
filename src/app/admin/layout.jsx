@@ -23,6 +23,8 @@ import {
   ChevronRight,
   Building2,
   Wallet,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -59,6 +61,7 @@ export default function AdminLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && (!user || user.role !== "HR")) {
@@ -84,36 +87,76 @@ export default function AdminLayout({ children }) {
   return (
     <TooltipProvider delayDuration={0}>
       <div className="min-h-screen bg-slate-50">
+        {/* Mobile Header */}
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 h-16 bg-white border-b shadow-sm flex items-center justify-between px-4">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 -ml-2 hover:bg-slate-100 rounded-lg"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-white">
+              <Building2 className="h-4 w-4" />
+            </div>
+            <h2 className="font-bold text-lg">HRMS</h2>
+          </div>
+          <Avatar className="h-8 w-8">
+            <AvatarFallback className="bg-primary text-white text-xs">
+              {user?.name?.charAt(0).toUpperCase() || "A"}
+            </AvatarFallback>
+          </Avatar>
+        </div>
+
+        {/* Mobile Overlay */}
+        {mobileMenuOpen && (
+          <div
+            className="lg:hidden fixed inset-0 bg-black/50 z-40"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
         <div className="flex">
           {/* Sidebar */}
           <aside
             className={cn(
-              "fixed left-0 top-0 z-40 h-screen bg-white border-r shadow-sm transition-all duration-300",
-              collapsed ? "w-17.5" : "w-65"
+              "fixed left-0 top-0 z-50 h-screen bg-white border-r shadow-sm transition-all duration-300",
+              // Desktop styles
+              "lg:z-40",
+              collapsed ? "lg:w-17.5" : "lg:w-65",
+              // Mobile styles
+              "w-72",
+              mobileMenuOpen ? "translate-x-0" : "-translate-x-full",
+              "lg:translate-x-0"
             )}
           >
             <div className="flex flex-col h-full">
               {/* Logo Header */}
-              <div className={cn(
-                "flex items-center h-16 px-4 border-b",
-                collapsed ? "justify-center" : "justify-between"
-              )}>
-                {!collapsed && (
-                  <div className="flex items-center gap-2">
+              <div className="flex items-center h-16 px-4 border-b justify-between lg:justify-between">
+                <div className="flex items-center gap-2">
+                  {!collapsed && (
+                    <>
+                      <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-white">
+                        <Building2 className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h2 className="font-bold text-lg leading-none">HRMS</h2>
+                        <p className="text-xs text-muted-foreground">Admin Panel</p>
+                      </div>
+                    </>
+                  )}
+                  {collapsed && (
                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-white">
                       <Building2 className="h-5 w-5" />
                     </div>
-                    <div>
-                      <h2 className="font-bold text-lg leading-none">HRMS</h2>
-                      <p className="text-xs text-muted-foreground">Admin Panel</p>
-                    </div>
-                  </div>
-                )}
-                {collapsed && (
-                  <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-white">
-                    <Building2 className="h-5 w-5" />
-                  </div>
-                )}
+                  )}
+                </div>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="lg:hidden p-2 hover:bg-slate-100 rounded-lg"
+                >
+                  <X className="h-5 w-5" />
+                </button>
               </div>
 
               {/* Navigation */}
@@ -127,7 +170,7 @@ export default function AdminLayout({ children }) {
                       return (
                         <Tooltip key={item.href}>
                           <TooltipTrigger asChild>
-                            <Link href={item.href}>
+                            <Link href={item.href} onClick={() => setMobileMenuOpen(false)}>
                               <Button
                                 variant={isActive ? "default" : "ghost"}
                                 className={cn(
@@ -147,7 +190,7 @@ export default function AdminLayout({ children }) {
                     }
 
                     return (
-                      <Link key={item.href} href={item.href}>
+                      <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)}>
                         <Button
                           variant={isActive ? "default" : "ghost"}
                           className={cn(
@@ -167,7 +210,7 @@ export default function AdminLayout({ children }) {
               {/* User Profile & Logout */}
               <div className="border-t p-3">
                 {!collapsed && (
-                  <div className="flex items-center gap-3 px-2 py-3 rounded-lg bg-slate-50 mb-3">
+                  <div className="hidden lg:flex items-center gap-3 px-2 py-3 rounded-lg bg-slate-50 mb-3">
                     <Avatar className="h-9 w-9">
                       <AvatarFallback className="bg-primary text-white text-sm">
                         {user.name?.charAt(0).toUpperCase() || "A"}
@@ -181,6 +224,19 @@ export default function AdminLayout({ children }) {
                     </div>
                   </div>
                 )}
+
+                {/* Mobile user info */}
+                <div className="lg:hidden flex items-center gap-3 px-2 py-3 rounded-lg bg-slate-50 mb-3">
+                  <Avatar className="h-9 w-9">
+                    <AvatarFallback className="bg-primary text-white text-sm">
+                      {user.name?.charAt(0).toUpperCase() || "A"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{user.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  </div>
+                </div>
 
                 {collapsed ? (
                   <Tooltip>
@@ -207,11 +263,11 @@ export default function AdminLayout({ children }) {
                 )}
               </div>
 
-              {/* Collapse Toggle */}
+              {/* Collapse Toggle - Hidden on mobile */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute -right-3 top-20 h-6 w-6 rounded-full border bg-white shadow-md hover:bg-slate-50"
+                className="hidden lg:flex absolute -right-3 top-20 h-6 w-6 rounded-full border bg-white shadow-md hover:bg-slate-50"
                 onClick={() => setCollapsed(!collapsed)}
               >
                 {collapsed ? (
@@ -227,10 +283,11 @@ export default function AdminLayout({ children }) {
           <main
             className={cn(
               "flex-1 min-h-screen transition-all duration-300",
-              collapsed ? "ml-17.5" : "ml-65"
+              collapsed ? "lg:ml-17.5" : "lg:ml-65",
+              "ml-0"
             )}
           >
-            <div className="p-8">{children}</div>
+            <div className="p-4 pt-20 lg:p-8 lg:pt-8">{children}</div>
           </main>
         </div>
       </div>
