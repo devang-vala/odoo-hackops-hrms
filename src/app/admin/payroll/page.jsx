@@ -409,7 +409,7 @@ export default function AdminPayrollPage() {
 
       {/* Configuration Dialog */}
       <Dialog open={configDialogOpen} onOpenChange={setConfigDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent style={{ width: '70vw', maxWidth: 'none' }} className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Salary Configuration - {selectedEmployee?.name}</DialogTitle>
             <DialogDescription>
@@ -542,7 +542,7 @@ export default function AdminPayrollPage() {
 
       {/* Payroll View Dialog */}
       <Dialog open={payrollDialogOpen} onOpenChange={setPayrollDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent style={{ width: '70vw', maxWidth: 'none' }} className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Payroll - {selectedEmployee?.name}</DialogTitle>
             <DialogDescription>
