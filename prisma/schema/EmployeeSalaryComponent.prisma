@@ -1,0 +1,16 @@
+model EmployeeSalaryComponent {
+  id                    String          @id @default(cuid())
+  userId                String
+  salaryComponentTypeId String
+  computationType       ComputationType // PERCENTAGE or FIXED
+  percentageValue       Float?           // e.g., 50% of basic
+  fixedAmount           Float?          // e.g., ₹5000
+  percentageBase        PercentageBase? // Calculate % of WAGE or BASIC
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salaryComponentType SalaryComponentType  @relation(fields: [salaryComponentTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, salaryComponentTypeId])
+}

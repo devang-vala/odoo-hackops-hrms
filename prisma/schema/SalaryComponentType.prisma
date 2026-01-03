@@ -1,0 +1,9 @@
+model SalaryComponentType {
+  id        String            @id @default(cuid())
+  name      String            @unique  // e.g., "Basic Salary", "HRA", "PF"
+  category  ComponentCategory // EARNING or DEDUCTION
+  sortOrder Int               @default(0)
+  createdAt DateTime          @default(now())
+
+  employeeSalaryComponents EmployeeSalaryComponent[]
+}

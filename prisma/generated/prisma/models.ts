@@ -8,6 +8,10 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/CalculatedSalary.ts'
+export type * from './models/EmployeeSalaryComponent.ts'
+export type * from './models/SalaryComponentType.ts'
+export type * from './models/SalaryInfo.ts'
 export type * from './models/Attendance.ts'
 export type * from './models/Leave.ts'
 export type * from './models/PasswordReset.ts'

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import axios from "axios";
+import axios from "@/lib/axios";
 
 const AuthContext = createContext({});
 

@@ -29,8 +29,8 @@ export * from "./enums.ts"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Attendances
- * const attendances = await prisma.attendance.findMany()
+ * // Fetch zero or more CalculatedSalaries
+ * const calculatedSalaries = await prisma.calculatedSalary.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -39,6 +39,26 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
+/**
+ * Model CalculatedSalary
+ * 
+ */
+export type CalculatedSalary = Prisma.CalculatedSalaryModel
+/**
+ * Model EmployeeSalaryComponent
+ * 
+ */
+export type EmployeeSalaryComponent = Prisma.EmployeeSalaryComponentModel
+/**
+ * Model SalaryComponentType
+ * 
+ */
+export type SalaryComponentType = Prisma.SalaryComponentTypeModel
+/**
+ * Model SalaryInfo
+ * 
+ */
+export type SalaryInfo = Prisma.SalaryInfoModel
 /**
  * Model Attendance
  * 

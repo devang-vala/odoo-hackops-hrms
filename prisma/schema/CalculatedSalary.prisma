@@ -1,0 +1,16 @@
+model CalculatedSalary {
+  id              String   @id @default(cuid())
+  userId          String
+  month           Int      // 1-12
+  year            Int
+  grossSalary     Float    // Total earnings
+  totalDeductions Float    // Total deductions
+  netSalary       Float    // Take-home pay
+  breakdown       Json     // Store component-wise breakdown
+  generatedAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete:  Cascade)
+
+  @@unique([userId, month, year])
+  @@index([userId])
+}

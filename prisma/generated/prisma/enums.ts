@@ -47,3 +47,27 @@ export const AttendanceStatus = {
 } as const
 
 export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
+
+
+export const ComponentCategory = {
+  EARNING: 'EARNING',
+  DEDUCTION: 'DEDUCTION'
+} as const
+
+export type ComponentCategory = (typeof ComponentCategory)[keyof typeof ComponentCategory]
+
+
+export const ComputationType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+} as const
+
+export type ComputationType = (typeof ComputationType)[keyof typeof ComputationType]
+
+
+export const PercentageBase = {
+  WAGE: 'WAGE',
+  BASIC: 'BASIC'
+} as const
+
+export type PercentageBase = (typeof PercentageBase)[keyof typeof PercentageBase]

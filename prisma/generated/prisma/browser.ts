@@ -18,6 +18,26 @@ export { Prisma }
 export * as $Enums from './enums.ts'
 export * from './enums.ts';
 /**
+ * Model CalculatedSalary
+ * 
+ */
+export type CalculatedSalary = Prisma.CalculatedSalaryModel
+/**
+ * Model EmployeeSalaryComponent
+ * 
+ */
+export type EmployeeSalaryComponent = Prisma.EmployeeSalaryComponentModel
+/**
+ * Model SalaryComponentType
+ * 
+ */
+export type SalaryComponentType = Prisma.SalaryComponentTypeModel
+/**
+ * Model SalaryInfo
+ * 
+ */
+export type SalaryInfo = Prisma.SalaryInfoModel
+/**
  * Model Attendance
  * 
  */

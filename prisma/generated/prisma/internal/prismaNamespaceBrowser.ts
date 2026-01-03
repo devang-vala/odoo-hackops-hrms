@@ -51,6 +51,10 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  CalculatedSalary: 'CalculatedSalary',
+  EmployeeSalaryComponent: 'EmployeeSalaryComponent',
+  SalaryComponentType: 'SalaryComponentType',
+  SalaryInfo: 'SalaryInfo',
   Attendance: 'Attendance',
   Leave: 'Leave',
   PasswordReset: 'PasswordReset',
@@ -71,6 +75,61 @@ export const TransactionIsolationLevel = {
 } as const
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const CalculatedSalaryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  month: 'month',
+  year: 'year',
+  grossSalary: 'grossSalary',
+  totalDeductions: 'totalDeductions',
+  netSalary: 'netSalary',
+  breakdown: 'breakdown',
+  generatedAt: 'generatedAt'
+} as const
+
+export type CalculatedSalaryScalarFieldEnum = (typeof CalculatedSalaryScalarFieldEnum)[keyof typeof CalculatedSalaryScalarFieldEnum]
+
+
+export const EmployeeSalaryComponentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  salaryComponentTypeId: 'salaryComponentTypeId',
+  computationType: 'computationType',
+  percentageValue: 'percentageValue',
+  fixedAmount: 'fixedAmount',
+  percentageBase: 'percentageBase',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EmployeeSalaryComponentScalarFieldEnum = (typeof EmployeeSalaryComponentScalarFieldEnum)[keyof typeof EmployeeSalaryComponentScalarFieldEnum]
+
+
+export const SalaryComponentTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  category: 'category',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type SalaryComponentTypeScalarFieldEnum = (typeof SalaryComponentTypeScalarFieldEnum)[keyof typeof SalaryComponentTypeScalarFieldEnum]
+
+
+export const SalaryInfoScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  monthlyWage: 'monthlyWage',
+  yearlyWage: 'yearlyWage',
+  workingDaysPerWeek: 'workingDaysPerWeek',
+  breakTimeHours: 'breakTimeHours',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SalaryInfoScalarFieldEnum = (typeof SalaryInfoScalarFieldEnum)[keyof typeof SalaryInfoScalarFieldEnum]
 
 
 export const AttendanceScalarFieldEnum = {
@@ -151,12 +210,28 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 export const NullsOrder = {

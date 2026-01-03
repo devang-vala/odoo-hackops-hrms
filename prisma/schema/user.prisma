@@ -23,4 +23,7 @@ model User {
   attendances    Attendance[]
   leaves         Leave[]
   approvedLeaves Leave[]         @relation("ApprovedLeaves")
+  salaryInfo              SalaryInfo?                  // ✅ Add
+  employeeSalaryComponents EmployeeSalaryComponent[]  // ✅ Add
+  calculatedSalaries      CalculatedSalary[] 
 }

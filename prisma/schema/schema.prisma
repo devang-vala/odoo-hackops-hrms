@@ -34,3 +34,18 @@ enum AttendanceStatus {
   WEEKEND
   HOLIDAY
 }
+
+enum ComponentCategory {
+  EARNING     // Additions (Basic, HRA, Allowances)
+  DEDUCTION   // Subtractions (PF, Tax)
+}
+
+enum ComputationType {
+  PERCENTAGE  // Calculate as % of base
+  FIXED       // Fixed amount
+}
+
+enum PercentageBase {
+  WAGE   // % of total monthly wage
+  BASIC  // % of basic salary component
+}

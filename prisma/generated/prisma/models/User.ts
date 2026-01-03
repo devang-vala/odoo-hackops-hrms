@@ -292,6 +292,9 @@ export type UserWhereInput = {
   attendances?: Prisma.AttendanceListRelationFilter
   leaves?: Prisma.LeaveListRelationFilter
   approvedLeaves?: Prisma.LeaveListRelationFilter
+  salaryInfo?: Prisma.XOR<Prisma.SalaryInfoNullableScalarRelationFilter, Prisma.SalaryInfoWhereInput> | null
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentListRelationFilter
+  calculatedSalaries?: Prisma.CalculatedSalaryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -312,6 +315,9 @@ export type UserOrderByWithRelationInput = {
   attendances?: Prisma.AttendanceOrderByRelationAggregateInput
   leaves?: Prisma.LeaveOrderByRelationAggregateInput
   approvedLeaves?: Prisma.LeaveOrderByRelationAggregateInput
+  salaryInfo?: Prisma.SalaryInfoOrderByWithRelationInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentOrderByRelationAggregateInput
+  calculatedSalaries?: Prisma.CalculatedSalaryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -335,6 +341,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   attendances?: Prisma.AttendanceListRelationFilter
   leaves?: Prisma.LeaveListRelationFilter
   approvedLeaves?: Prisma.LeaveListRelationFilter
+  salaryInfo?: Prisma.XOR<Prisma.SalaryInfoNullableScalarRelationFilter, Prisma.SalaryInfoWhereInput> | null
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentListRelationFilter
+  calculatedSalaries?: Prisma.CalculatedSalaryListRelationFilter
 }, "id" | "email" | "googleId" | "employeeId">
 
 export type UserOrderByWithAggregationInput = {
@@ -395,6 +404,9 @@ export type UserCreateInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
   leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
   approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -415,6 +427,9 @@ export type UserUncheckedCreateInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
   leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
   approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -435,6 +450,9 @@ export type UserUpdateInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
   leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
   approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -455,6 +473,9 @@ export type UserUncheckedUpdateInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
   leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
   approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -575,6 +596,48 @@ export type UserSumOrderByAggregateInput = {
   casualLeaveBalance?: Prisma.SortOrder
 }
 
+export type UserCreateNestedOneWithoutCalculatedSalariesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCalculatedSalariesInput, Prisma.UserUncheckedCreateWithoutCalculatedSalariesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCalculatedSalariesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCalculatedSalariesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCalculatedSalariesInput, Prisma.UserUncheckedCreateWithoutCalculatedSalariesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCalculatedSalariesInput
+  upsert?: Prisma.UserUpsertWithoutCalculatedSalariesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCalculatedSalariesInput, Prisma.UserUpdateWithoutCalculatedSalariesInput>, Prisma.UserUncheckedUpdateWithoutCalculatedSalariesInput>
+}
+
+export type UserCreateNestedOneWithoutEmployeeSalaryComponentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEmployeeSalaryComponentsInput, Prisma.UserUncheckedCreateWithoutEmployeeSalaryComponentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmployeeSalaryComponentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutEmployeeSalaryComponentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEmployeeSalaryComponentsInput, Prisma.UserUncheckedCreateWithoutEmployeeSalaryComponentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmployeeSalaryComponentsInput
+  upsert?: Prisma.UserUpsertWithoutEmployeeSalaryComponentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmployeeSalaryComponentsInput, Prisma.UserUpdateWithoutEmployeeSalaryComponentsInput>, Prisma.UserUncheckedUpdateWithoutEmployeeSalaryComponentsInput>
+}
+
+export type UserCreateNestedOneWithoutSalaryInfoInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSalaryInfoInput, Prisma.UserUncheckedCreateWithoutSalaryInfoInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSalaryInfoInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSalaryInfoNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSalaryInfoInput, Prisma.UserUncheckedCreateWithoutSalaryInfoInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSalaryInfoInput
+  upsert?: Prisma.UserUpsertWithoutSalaryInfoInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSalaryInfoInput, Prisma.UserUpdateWithoutSalaryInfoInput>, Prisma.UserUncheckedUpdateWithoutSalaryInfoInput>
+}
+
 export type UserCreateNestedOneWithoutAttendancesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAttendancesInput, Prisma.UserUncheckedCreateWithoutAttendancesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAttendancesInput
@@ -637,6 +700,318 @@ export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
 
+export type UserCreateWithoutCalculatedSalariesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCalculatedSalariesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCalculatedSalariesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCalculatedSalariesInput, Prisma.UserUncheckedCreateWithoutCalculatedSalariesInput>
+}
+
+export type UserUpsertWithoutCalculatedSalariesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCalculatedSalariesInput, Prisma.UserUncheckedUpdateWithoutCalculatedSalariesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCalculatedSalariesInput, Prisma.UserUncheckedCreateWithoutCalculatedSalariesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCalculatedSalariesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCalculatedSalariesInput, Prisma.UserUncheckedUpdateWithoutCalculatedSalariesInput>
+}
+
+export type UserUpdateWithoutCalculatedSalariesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCalculatedSalariesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutEmployeeSalaryComponentsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoCreateNestedOneWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutEmployeeSalaryComponentsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedCreateNestedOneWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutEmployeeSalaryComponentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEmployeeSalaryComponentsInput, Prisma.UserUncheckedCreateWithoutEmployeeSalaryComponentsInput>
+}
+
+export type UserUpsertWithoutEmployeeSalaryComponentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEmployeeSalaryComponentsInput, Prisma.UserUncheckedUpdateWithoutEmployeeSalaryComponentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEmployeeSalaryComponentsInput, Prisma.UserUncheckedCreateWithoutEmployeeSalaryComponentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEmployeeSalaryComponentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEmployeeSalaryComponentsInput, Prisma.UserUncheckedUpdateWithoutEmployeeSalaryComponentsInput>
+}
+
+export type UserUpdateWithoutEmployeeSalaryComponentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUpdateOneWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEmployeeSalaryComponentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedUpdateOneWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSalaryInfoInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSalaryInfoInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  googleId?: string | null
+  employeeId?: string | null
+  phone?: string | null
+  paidLeaveBalance?: number
+  sickLeaveBalance?: number
+  casualLeaveBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
+  leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
+  approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSalaryInfoInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSalaryInfoInput, Prisma.UserUncheckedCreateWithoutSalaryInfoInput>
+}
+
+export type UserUpsertWithoutSalaryInfoInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSalaryInfoInput, Prisma.UserUncheckedUpdateWithoutSalaryInfoInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSalaryInfoInput, Prisma.UserUncheckedCreateWithoutSalaryInfoInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSalaryInfoInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSalaryInfoInput, Prisma.UserUncheckedUpdateWithoutSalaryInfoInput>
+}
+
+export type UserUpdateWithoutSalaryInfoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSalaryInfoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  sickLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  casualLeaveBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
+  leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
+  approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutAttendancesInput = {
   id?: string
   name: string
@@ -654,6 +1029,9 @@ export type UserCreateWithoutAttendancesInput = {
   passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
   leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
   approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAttendancesInput = {
@@ -673,6 +1051,9 @@ export type UserUncheckedCreateWithoutAttendancesInput = {
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
   leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
   approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAttendancesInput = {
@@ -708,6 +1089,9 @@ export type UserUpdateWithoutAttendancesInput = {
   passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
   leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
   approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttendancesInput = {
@@ -727,6 +1111,9 @@ export type UserUncheckedUpdateWithoutAttendancesInput = {
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
   approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLeavesInput = {
@@ -746,6 +1133,9 @@ export type UserCreateWithoutLeavesInput = {
   passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
   attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
   approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLeavesInput = {
@@ -765,6 +1155,9 @@ export type UserUncheckedCreateWithoutLeavesInput = {
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
   approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLeavesInput = {
@@ -789,6 +1182,9 @@ export type UserCreateWithoutApprovedLeavesInput = {
   passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
   attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
   leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
+  salaryInfo?: Prisma.SalaryInfoCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApprovedLeavesInput = {
@@ -808,6 +1204,9 @@ export type UserUncheckedCreateWithoutApprovedLeavesInput = {
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
   leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApprovedLeavesInput = {
@@ -843,6 +1242,9 @@ export type UserUpdateWithoutLeavesInput = {
   passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
   attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
   approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLeavesInput = {
@@ -862,6 +1264,9 @@ export type UserUncheckedUpdateWithoutLeavesInput = {
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
   approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutApprovedLeavesInput = {
@@ -892,6 +1297,9 @@ export type UserUpdateWithoutApprovedLeavesInput = {
   passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
   attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
   leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
+  salaryInfo?: Prisma.SalaryInfoUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedLeavesInput = {
@@ -911,6 +1319,9 @@ export type UserUncheckedUpdateWithoutApprovedLeavesInput = {
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
   leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPasswordResetsInput = {
@@ -930,6 +1341,9 @@ export type UserCreateWithoutPasswordResetsInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutUserInput
   leaves?: Prisma.LeaveCreateNestedManyWithoutUserInput
   approvedLeaves?: Prisma.LeaveCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -949,6 +1363,9 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutUserInput
   leaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutUserInput
   approvedLeaves?: Prisma.LeaveUncheckedCreateNestedManyWithoutApproverInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedCreateNestedOneWithoutUserInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedCreateNestedManyWithoutUserInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -984,6 +1401,9 @@ export type UserUpdateWithoutPasswordResetsInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutUserNestedInput
   leaves?: Prisma.LeaveUpdateManyWithoutUserNestedInput
   approvedLeaves?: Prisma.LeaveUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -1003,6 +1423,9 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutUserNestedInput
   leaves?: Prisma.LeaveUncheckedUpdateManyWithoutUserNestedInput
   approvedLeaves?: Prisma.LeaveUncheckedUpdateManyWithoutApproverNestedInput
+  salaryInfo?: Prisma.SalaryInfoUncheckedUpdateOneWithoutUserNestedInput
+  employeeSalaryComponents?: Prisma.EmployeeSalaryComponentUncheckedUpdateManyWithoutUserNestedInput
+  calculatedSalaries?: Prisma.CalculatedSalaryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1015,6 +1438,8 @@ export type UserCountOutputType = {
   attendances: number
   leaves: number
   approvedLeaves: number
+  employeeSalaryComponents: number
+  calculatedSalaries: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1022,6 +1447,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   attendances?: boolean | UserCountOutputTypeCountAttendancesArgs
   leaves?: boolean | UserCountOutputTypeCountLeavesArgs
   approvedLeaves?: boolean | UserCountOutputTypeCountApprovedLeavesArgs
+  employeeSalaryComponents?: boolean | UserCountOutputTypeCountEmployeeSalaryComponentsArgs
+  calculatedSalaries?: boolean | UserCountOutputTypeCountCalculatedSalariesArgs
 }
 
 /**
@@ -1062,6 +1489,20 @@ export type UserCountOutputTypeCountApprovedLeavesArgs<ExtArgs extends runtime.T
   where?: Prisma.LeaveWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountEmployeeSalaryComponentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmployeeSalaryComponentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCalculatedSalariesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CalculatedSalaryWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1081,6 +1522,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   attendances?: boolean | Prisma.User$attendancesArgs<ExtArgs>
   leaves?: boolean | Prisma.User$leavesArgs<ExtArgs>
   approvedLeaves?: boolean | Prisma.User$approvedLeavesArgs<ExtArgs>
+  salaryInfo?: boolean | Prisma.User$salaryInfoArgs<ExtArgs>
+  employeeSalaryComponents?: boolean | Prisma.User$employeeSalaryComponentsArgs<ExtArgs>
+  calculatedSalaries?: boolean | Prisma.User$calculatedSalariesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1138,6 +1582,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   attendances?: boolean | Prisma.User$attendancesArgs<ExtArgs>
   leaves?: boolean | Prisma.User$leavesArgs<ExtArgs>
   approvedLeaves?: boolean | Prisma.User$approvedLeavesArgs<ExtArgs>
+  salaryInfo?: boolean | Prisma.User$salaryInfoArgs<ExtArgs>
+  employeeSalaryComponents?: boolean | Prisma.User$employeeSalaryComponentsArgs<ExtArgs>
+  calculatedSalaries?: boolean | Prisma.User$calculatedSalariesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1150,6 +1597,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     attendances: Prisma.$AttendancePayload<ExtArgs>[]
     leaves: Prisma.$LeavePayload<ExtArgs>[]
     approvedLeaves: Prisma.$LeavePayload<ExtArgs>[]
+    salaryInfo: Prisma.$SalaryInfoPayload<ExtArgs> | null
+    employeeSalaryComponents: Prisma.$EmployeeSalaryComponentPayload<ExtArgs>[]
+    calculatedSalaries: Prisma.$CalculatedSalaryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1563,6 +2013,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   attendances<T extends Prisma.User$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   leaves<T extends Prisma.User$leavesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$leavesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvedLeaves<T extends Prisma.User$approvedLeavesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedLeavesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  salaryInfo<T extends Prisma.User$salaryInfoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$salaryInfoArgs<ExtArgs>>): Prisma.Prisma__SalaryInfoClient<runtime.Types.Result.GetResult<Prisma.$SalaryInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  employeeSalaryComponents<T extends Prisma.User$employeeSalaryComponentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$employeeSalaryComponentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeeSalaryComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  calculatedSalaries<T extends Prisma.User$calculatedSalariesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$calculatedSalariesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CalculatedSalaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2086,6 +2539,73 @@ export type User$approvedLeavesArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.LeaveScalarFieldEnum | Prisma.LeaveScalarFieldEnum[]
+}
+
+/**
+ * User.salaryInfo
+ */
+export type User$salaryInfoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SalaryInfo
+   */
+  select?: Prisma.SalaryInfoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SalaryInfo
+   */
+  omit?: Prisma.SalaryInfoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SalaryInfoInclude<ExtArgs> | null
+  where?: Prisma.SalaryInfoWhereInput
+}
+
+/**
+ * User.employeeSalaryComponents
+ */
+export type User$employeeSalaryComponentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmployeeSalaryComponent
+   */
+  select?: Prisma.EmployeeSalaryComponentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmployeeSalaryComponent
+   */
+  omit?: Prisma.EmployeeSalaryComponentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmployeeSalaryComponentInclude<ExtArgs> | null
+  where?: Prisma.EmployeeSalaryComponentWhereInput
+  orderBy?: Prisma.EmployeeSalaryComponentOrderByWithRelationInput | Prisma.EmployeeSalaryComponentOrderByWithRelationInput[]
+  cursor?: Prisma.EmployeeSalaryComponentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmployeeSalaryComponentScalarFieldEnum | Prisma.EmployeeSalaryComponentScalarFieldEnum[]
+}
+
+/**
+ * User.calculatedSalaries
+ */
+export type User$calculatedSalariesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CalculatedSalary
+   */
+  select?: Prisma.CalculatedSalarySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CalculatedSalary
+   */
+  omit?: Prisma.CalculatedSalaryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CalculatedSalaryInclude<ExtArgs> | null
+  where?: Prisma.CalculatedSalaryWhereInput
+  orderBy?: Prisma.CalculatedSalaryOrderByWithRelationInput | Prisma.CalculatedSalaryOrderByWithRelationInput[]
+  cursor?: Prisma.CalculatedSalaryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CalculatedSalaryScalarFieldEnum | Prisma.CalculatedSalaryScalarFieldEnum[]
 }
 
 /**
