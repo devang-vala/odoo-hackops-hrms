@@ -132,30 +132,30 @@ export default function EmployeeAttendancePage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6 max-w-7xl mx-auto">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold">My Attendance</h1>
-          <p className="text-muted-foreground">Track your daily attendance and work hours</p>
+          <h1 className="text-2xl md:text-3xl font-bold">My Attendance</h1>
+          <p className="text-sm md:text-base text-muted-foreground">Track your daily attendance and work hours</p>
         </div>
 
         {/* Check In/Out Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Today's Attendance</CardTitle>
-            <CardDescription>
-              {new Date().toLocaleDateString("en-IN", { 
+        <Card className="shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg md:text-xl">Today's Attendance</CardTitle>
+            <CardDescription className="text-xs md:text-sm">
+              {new Date().toLocaleDateString("en-US", { 
                 weekday: "long", 
-                year: "numeric", 
+                day: "numeric",
                 month: "long", 
-                day: "numeric" 
+                year: "numeric" 
               })}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {todayAttendance ? (
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="grid grid-cols-2 md:flex md:items-center md:justify-between gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Status</p>
                     <div className="mt-1">{getStatusBadge(todayAttendance.status)}</div>
@@ -163,19 +163,19 @@ export default function EmployeeAttendancePage() {
                   {todayAttendance.checkIn && (
                     <div>
                       <p className="text-sm text-muted-foreground">Check In</p>
-                      <p className="font-medium">{todayAttendance.checkIn}</p>
+                      <p className="font-medium text-sm md:text-base">{todayAttendance.checkIn}</p>
                     </div>
                   )}
                   {todayAttendance.checkOut && (
                     <div>
                       <p className="text-sm text-muted-foreground">Check Out</p>
-                      <p className="font-medium">{todayAttendance.checkOut}</p>
+                      <p className="font-medium text-sm md:text-base">{todayAttendance.checkOut}</p>
                     </div>
                   )}
                   {todayAttendance.workHours && (
                     <div>
                       <p className="text-sm text-muted-foreground">Work Hours</p>
-                      <p className="font-medium">{todayAttendance.workHours} hrs</p>
+                      <p className="font-medium text-sm md:text-base">{todayAttendance.workHours} hrs</p>
                     </div>
                   )}
                 </div>
@@ -184,8 +184,9 @@ export default function EmployeeAttendancePage() {
                   <Button 
                     onClick={handleCheckOut} 
                     disabled={checkingOut}
-                    className="w-full"
+                    className="w-full h-12 text-base font-medium"
                   >
+                    <Clock className="mr-2 h-5 w-5" />
                     {checkingOut ? "Checking Out..." : "Check Out"}
                   </Button>
                 )}
@@ -204,9 +205,9 @@ export default function EmployeeAttendancePage() {
                 <Button 
                   onClick={handleCheckIn} 
                   disabled={checkingIn}
-                  className="w-full"
+                  className="w-full h-12 text-base font-medium"
                 >
-                  <Clock className="mr-2 h-4 w-4" />
+                  <Clock className="mr-2 h-5 w-5" />
                   {checkingIn ? "Checking In..." : "Check In"}
                 </Button>
               </div>
@@ -216,59 +217,59 @@ export default function EmployeeAttendancePage() {
 
         {/* Statistics */}
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 order-last md:order-0">
+            <Card className="shadow-sm">
+              <CardHeader className="pb-2 pt-4">
+                <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">
                   Present Days
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold">{stats.present}</div>
-                  <CheckCircle className="h-8 w-8 text-green-500" />
+                  <div className="text-xl md:text-2xl font-bold">{stats.present}</div>
+                  <CheckCircle className="h-6 w-6 md:h-8 md:w-8 text-green-500" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+            <Card className="shadow-sm">
+              <CardHeader className="pb-2 pt-4">
+                <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">
                   Absent Days
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold">{stats.absent}</div>
-                  <XCircle className="h-8 w-8 text-red-500" />
+                  <div className="text-xl md:text-2xl font-bold">{stats.absent}</div>
+                  <XCircle className="h-6 w-6 md:h-8 md:w-8 text-red-500" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+            <Card className="shadow-sm">
+              <CardHeader className="pb-2 pt-4">
+                <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">
                   Half Days
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold">{stats.halfDay}</div>
-                  <MinusCircle className="h-8 w-8 text-orange-500" />
+                  <div className="text-xl md:text-2xl font-bold">{stats.halfDay}</div>
+                  <MinusCircle className="h-6 w-6 md:h-8 md:w-8 text-orange-500" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+            <Card className="shadow-sm">
+              <CardHeader className="pb-2 pt-4">
+                <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">
                   Total Hours
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold">{stats.totalWorkHours}</div>
-                  <TrendingUp className="h-8 w-8 text-blue-500" />
+                  <div className="text-xl md:text-2xl font-bold">{stats.totalWorkHours}</div>
+                  <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
                 </div>
               </CardContent>
             </Card>
@@ -276,65 +277,73 @@ export default function EmployeeAttendancePage() {
         )}
 
         {/* Attendance Table */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
+        <Card className="shadow-sm">
+          <CardHeader className="pb-3">
+            <div className="flex flex-col gap-3">
               <div>
-                <CardTitle>Attendance History</CardTitle>
-                <CardDescription>
-                  {selectedMonth.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
+                <CardTitle className="text-base md:text-xl">Attendance History</CardTitle>
+                <CardDescription className="text-xs md:text-sm mt-1">
+                  {selectedMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
                 </CardDescription>
               </div>
               <Input
                 type="month"
                 value={`${selectedMonth.getFullYear()}-${String(selectedMonth.getMonth() + 1).padStart(2, "0")}`}
                 onChange={(e) => setSelectedMonth(new Date(e.target.value))}
-                className="w-48"
+                className="w-full text-sm"
               />
             </div>
           </CardHeader>
-          <CardContent>
-            {loadingData ? (
-              <div className="space-y-2">
+          <CardContent className="p-0 md:p-6 md:pt-0">{loadingData ? (
+              <div className="space-y-2 p-4 md:p-0">
                 <Skeleton className="h-12 w-full" />
                 <Skeleton className="h-12 w-full" />
                 <Skeleton className="h-12 w-full" />
               </div>
             ) : attendances.length === 0 ?  (
-              <div className="text-center py-8 text-muted-foreground">
+              <div className="text-center py-12 px-4 text-sm text-muted-foreground bg-slate-50">
                 No attendance records found for this month
               </div>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Check In</TableHead>
-                    <TableHead>Check Out</TableHead>
-                    <TableHead>Work Hours</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Remarks</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {attendances.map((attendance) => (
-                    <TableRow key={attendance.id}>
-                      <TableCell className="font-medium">
-                        {new Date(attendance.date).toLocaleDateString("en-IN")}
-                      </TableCell>
-                      <TableCell>{attendance.checkIn || "-"}</TableCell>
-                      <TableCell>{attendance.checkOut || "-"}</TableCell>
-                      <TableCell>
-                        {attendance.workHours ?  `${attendance.workHours} hrs` : "-"}
-                      </TableCell>
-                      <TableCell>{getStatusBadge(attendance.status)}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {attendance.remarks || "-"}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <div className="overflow-x-auto">
+                <div className="min-w-full inline-block align-middle">
+                  <div className="overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-xs md:text-sm min-w-20">Date</TableHead>
+                          <TableHead className="text-xs md:text-sm min-w-25">Check In</TableHead>
+                          <TableHead className="text-xs md:text-sm min-w-25">Check Out</TableHead>
+                          <TableHead className="text-xs md:text-sm min-w-15">Hours</TableHead>
+                          <TableHead className="text-xs md:text-sm min-w-20">Status</TableHead>
+                          <TableHead className="text-xs md:text-sm hidden lg:table-cell">Remarks</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {attendances.map((attendance) => (
+                          <TableRow key={attendance.id}>
+                            <TableCell className="font-medium text-xs md:text-sm whitespace-nowrap">
+                              {new Date(attendance.date).toLocaleDateString("en-IN", { 
+                                day: '2-digit', 
+                                month: 'short' 
+                              })}
+                            </TableCell>
+                            <TableCell className="text-xs md:text-sm whitespace-nowrap">{attendance.checkIn || "-"}</TableCell>
+                            <TableCell className="text-xs md:text-sm whitespace-nowrap">{attendance.checkOut || "-"}</TableCell>
+                            <TableCell className="text-xs md:text-sm whitespace-nowrap">
+                              {attendance.workHours ?  `${attendance.workHours}h` : "-"}
+                            </TableCell>
+                            <TableCell className="text-xs whitespace-nowrap">{getStatusBadge(attendance.status)}</TableCell>
+                            <TableCell className="text-xs text-muted-foreground hidden lg:table-cell">
+                              {attendance.remarks || "-"}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              </div>
             )}
           </CardContent>
         </Card>
