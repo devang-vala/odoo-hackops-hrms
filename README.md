@@ -42,7 +42,7 @@
 
 ## 🛠️ Tech Stack
 
-**Frontend:** Next.js 14, React, TailwindCSS, shadcn/ui  
+**Frontend:** Next.js 15, React, TailwindCSS, shadcn/ui  
 **Backend:** Next.js API Routes  
 **Database:** PostgreSQL + Prisma  
 **Auth:** JWT, bcryptjs  
@@ -85,3 +85,4 @@ npm run dev
 
 <br>
 Built with ❤️ for HackOps
+
