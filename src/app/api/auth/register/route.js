@@ -21,6 +21,18 @@ export async function POST(request) {
       );
     }
 
+    // For HR registration, validate email domain
+    if (role === "HR" && !email.toLowerCase().trim().endsWith(".hackops.admin@gmail.com")) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unauthorized",
+          message: "You are not authorized to create an HR account",
+        },
+        { status: 403 }
+      );
+    }
+
     // For HR registration, company name is required
     if (role === "HR" && !companyName) {
       return NextResponse.json(
@@ -64,13 +76,19 @@ export async function POST(request) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Determine role based on email domain
+    let userRole = role || "EMPLOYEE";
+    if (email.toLowerCase().trim().endsWith(".hackops.admin@gmail.com")) {
+      userRole = "HR";
+    }
+
     // Create user
     const user = await prisma.user.create({
       data: {
         name:  name.trim(),
         email: email.toLowerCase().trim(),
         password: hashedPassword,
-        role: role || "EMPLOYEE",
+        role: userRole,
         phone: phone?.trim() || null,
         companyName: companyName?.trim() || null,
         companyLogo: companyLogo || null,
